@@ -13,8 +13,8 @@ def index():
 
 @app.route('/predict', methods=['GET'])
 def predict():
-    if request.files['upload']:
-        isOpen, person = Processing(request.files['upload'])
+    if request.files['file']:
+        isOpen, person = Processing(request.files['file'])
         return jsonify({
             "isOpen":isOpen,
             "person":person
