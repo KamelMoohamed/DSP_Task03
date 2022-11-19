@@ -319,3 +319,34 @@ body{
     color: white;
     border: 2px solid white;
 }
+
+.pause-input{
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 3%;
+    left: 17%;
+    transform: translate(91.4%, -5%);
+    background-color: var(--black);
+    width: 12rem;
+    height: 5.5rem;
+    border-radius: 25px;
+    cursor: pointer;
+    color: var(--door-frame);
+    border: 0;
+    transition: 0.3s ease-in-out;
+    border: 2px solid transparent;
+
+
+}
+
+.pause-icon{
+    color: inherit;
+    font-size: 2rem;
+}
+
+.pause-input-active{
+    color: white;
+    border: 2px solid white;
+}
