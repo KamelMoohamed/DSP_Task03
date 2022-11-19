@@ -4,10 +4,6 @@ let door = document.querySelector(".door")
 let doorIsOpened = false
 doorHandle.addEventListener("click", (e)=>{micInput.click()})
 
-
-
-
-
 let eyes = document.querySelector(".eyes")
 let eyelid = document.querySelectorAll(".eyelid")
 
@@ -28,10 +24,12 @@ function eyesBreathInhalation(){
 function eyesBreathExhalation(){
     eyes.classList.remove("eyes-breath")
 } 
-
 setInterval(eyesBreathInhalation, 4000);
-
-
+// const recorder = document.getElementById('recorder');
+// const player = document.getElementById('player');
+// let pause= document.getElementById('pause');
+var recorder;
+window.onload = function() {
 
 
 
@@ -105,3 +103,4 @@ let correct = document.querySelector(".correct")
 let wrong = document.querySelector(".test-btn.wrong")
 correct.addEventListener('click', (e)=>{correctVoice()})
 wrong.addEventListener('click', (e)=>{wrongVoice()})
+
