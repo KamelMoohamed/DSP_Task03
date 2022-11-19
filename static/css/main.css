@@ -1,0 +1,321 @@
+:root{
+    --primary-color: rgb(81, 80, 95);
+    --door-frame: rgb(55, 54, 65);
+    --shade-color: rgb(29, 28, 35);
+    --darker-shade: rgb(18, 18, 22);
+    --black: black;
+    --border-radius: 15px;
+}
+
+body{
+    background-image: url("../imgs/Background-01.png");
+    background-position: center; 
+    background-repeat: no-repeat; 
+    background-size:107rem;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.door-container{
+    width: 25rem;
+    height: 34.7rem;
+    background-color: transparent;
+    position: absolute;
+    bottom: 5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    border-top-left-radius: 50%;
+    border-top-right-radius: 50%;
+}
+
+
+.door-frame{
+    width: 25rem;
+    height: 34.7rem;
+    background-color: var(--black);
+    border-radius: inherit;
+    position: absolute;
+    bottom:0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.door{
+    width: 22rem;
+    height: 33.2rem;
+    background-color: var(--primary-color);
+    border-radius: inherit;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    transform-origin: left;
+    transition: 0.5s ease-in-out;
+    z-index: 3;
+}
+
+.opened-door-background{
+    width: 22rem;
+    height: 33.2rem;
+    border-radius: inherit;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background-image: radial-gradient( var(--black) , var(--shade-color));
+}
+
+.tunnel-end{
+    width: 10rem;
+    height: 21rem;
+    background-color: var(--black);
+    border-radius: inherit;
+    position: absolute;
+    bottom: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.tunnel-ground{
+    width: 10rem;
+    height: 21rem;
+    background-color: var(--black);
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: perspective(530px) translate(-35%) rotateX(-104deg) translateY(-50%) rotateZ(8deg);
+}
+
+.door-open{
+    transform: perspective(1500px) translateZ(0px) translateX(0px) translateY(0px) rotateY(-105deg);
+    left: 1rem;
+}
+
+.door-handle{
+    width: 2rem;
+    height: 2rem;
+    position: absolute;
+    top: 60%;
+    transform: translateY(-50%);
+    right: 10%;
+    background-color: var(--black);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.door-handle-shade{
+    width: 90%;
+    height: 90%;
+    background-color: var(--shade-color);
+    border-radius: inherit;
+    pointer-events: none;
+}
+
+.door-window-container{
+    height: 2.5rem;
+    width: 10rem;
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: transparent;
+    border-radius: var(--border-radius);
+    background-color: var(--black);
+    overflow: hidden;
+}
+
+.door-window{
+    width: 100%;
+    height: 100%;
+    border-radius: calc(var(--border-radius) - 4px);
+    background-color: var(--door-frame);
+    transition: 0.5s ease-in-out;
+}
+
+.door-window-open{
+    width: 16% !important;
+}
+
+
+.window-handle{
+    width: 0.7rem;
+    height: 1.8rem;
+    background-color: var(--shade-color);
+    border-radius: calc(var(--border-radius) - 10px);
+    position: absolute;
+    top: 50%;
+    right: 5%;
+    transform: translateY(-50%);
+    transition: 0.5s ease-in-out;
+}
+
+.window-handle-open{
+    right: 86%;
+}
+
+.door-hinges{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 10rem;
+    position: absolute;
+    left: 0;
+    top: 60%;
+    transform: translateY(-50%);
+}
+
+.hinge{
+    background-color: var(--black);
+    width: 0.8rem;
+    height: 2.5rem;
+    border-bottom-right-radius: calc(var(--border-radius) - 10px);
+    border-top-right-radius: calc(var(--border-radius) - 10px);
+}
+
+.horizontal{
+    background-color: var(--black);
+    width: 105%;
+    margin-left: -5%;
+    height: 5rem;
+    position: absolute;
+    bottom: 0rem;
+    z-index: -2;
+}
+
+.shadow{
+    position: absolute;
+    opacity: 0.35;
+    pointer-events: none;
+}
+
+.top{
+    background-image: linear-gradient(to bottom, var(--black), transparent);
+    height: 10rem;
+    width: 105%;
+    margin-left: -5%;
+    top: 0;
+}
+
+.bottom{
+    background-image: linear-gradient(to top, var(--black), transparent);
+    height: 10rem;
+    width: 105%;
+    margin-left: -5%;
+    bottom: 0rem;
+}
+
+.left{
+    background-image: linear-gradient(to right, var(--black), transparent);
+    height: 105%;
+    width: 10rem;
+    margin-top: -5%;
+    left: 0;
+}
+
+.right{
+    background-image: linear-gradient(to left, var(--black), transparent);
+    height: 105%;
+    width: 10rem;
+    margin-top: -5%;
+    right: 0;
+}
+
+.eyes{
+    height: 2rem;
+    width: 6em;
+    display: flex;
+    justify-content: space-evenly;
+    position: absolute;
+    left: 50%;
+    top: 39%;
+    transform: translate(-50%, -50%);
+    transition: 1s ease-in-out;
+    z-index: -1;
+}
+
+.eyes-breath{
+    top: 28% !important
+}
+
+.eye-container{
+    background-color: white;
+    border-radius: 50%;
+    width: 2rem;
+    
+}
+
+.eye{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.eyelid{
+    position: absolute;
+    top: -10%;
+    background-color: var(--black);
+    width: 2.2rem;
+    height: 1rem;
+    border-top-left-radius: 50%;
+    border-top-right-radius: 50%;
+    transition: 0.2s ease-in-out;
+}
+
+.eyelid.left-eyelid{
+    transform: rotateZ(15deg);
+}
+.eyelid.right-eyelid{
+    transform: rotateZ(-15deg) translateX(-4px);
+}
+
+.eyelid-close{
+    border-radius: 50%;
+    height: 2.5rem;
+    width: 2.5rem;
+}
+
+.eye-cornea{
+    background: red;
+    width: 50%;
+    height: 50%;
+    border-radius: 50%;
+    transition: 0.5s ease-in-out;
+}
+
+.eyes-breath .eye-cornea{
+    width: 70%;
+    height: 70%;
+}
+
+.mic-input{
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(122.4%, -106%);
+    background-color: var(--black);
+    width: 12rem;
+    height: 5.5rem;
+    border-radius: 25px;
+    cursor: pointer;
+    color: var(--door-frame);
+    border: 0;
+    transition: 0.3s ease-in-out;
+    border: 2px solid transparent;
+
+
+}
+
+.mic-icon{
+    color: inherit;
+    font-size: 2rem;
+}
+
+.mic-input-active{
+    color: white;
+    border: 2px solid white;
+}
