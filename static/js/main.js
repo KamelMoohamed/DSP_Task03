@@ -1,10 +1,8 @@
 let doorHandle = document.querySelector(".door-handle")
 let windowHandle = document.querySelector(".window-handle")
+let door = document.querySelector(".door")
 let doorIsOpened = false
-doorHandle.addEventListener("click", (e)=>{
-    document.querySelector(".door").classList.toggle("door-open")
-    doorIsOpened = true
-})
+doorHandle.addEventListener("click", (e)=>{micInput.click()})
 
 
 
@@ -33,16 +31,77 @@ function eyesBreathExhalation(){
 
 setInterval(eyesBreathInhalation, 4000);
 
-const recorder = document.getElementById('recorder');
-const player = document.getElementById('player');
 
 
 
 
-
-let micInput = document.querySelector(".mic-input")
+let micInput = document.querySelector("#record")
 micInput.addEventListener("click", (e)=>{
+    ironDoor.classList.remove("iron-door-close")
     micInput.classList.toggle("mic-input-active")
-    document.querySelector(".door-window").classList.toggle("door-window-open")
-    document.querySelector(".window-handle").classList.toggle("window-handle-open")
+    if(!door.classList.contains("door-open")){
+        document.querySelector(".door-window").classList.toggle("door-window-open")
+        document.querySelector(".window-handle").classList.toggle("window-handle-open")
+    }
 })
+
+var recorder;
+window.onload = function() {
+    recordButton = document.getElementById('record');
+    navigator.mediaDevices.getUserMedia({audio: true})
+        .then(function(stream) {
+            recordButton.addEventListener('click', (e) => {
+                if(!e.target.classList.contains("mic-input-active")){
+                    stopRecording()
+                } else {
+                    startRecording()
+                }
+                });
+            var options = {mimeType: 'audio/webm'}
+            recorder = new MediaRecorder(stream, options);
+            recorder.addEventListener('dataavailable', (record)=>{
+                onRecordingReady(record)
+            });
+        }, 
+        function() {    
+            document.querySelector("#audioMediaNotAvailable").show;
+        });
+    }
+
+function startRecording() {recorder.start();}
+function stopRecording() {recorder.stop();}
+var audioFile;
+function onRecordingReady(record) {
+    var audio = document.getElementById('audio');
+    audioFile = record.data;
+    //  var file = new File(e.data,"hello.wav");
+    audio.src = URL.createObjectURL(audioFile);
+    audio.play();
+}
+
+
+
+
+
+let ironDoor = document.querySelector(".iron-door")
+function correctVoice(){
+    door.classList.toggle("door-open")
+    micInput.classList.add("correct-voice")
+    setTimeout(restMicBtn, 2000)
+}
+
+function wrongVoice(){
+    micInput.classList.toggle("wrong-voice")
+    ironDoor.classList.toggle("iron-door-close")
+    setTimeout(restMicBtn, 2000)
+}
+
+function restMicBtn(){
+    micInput.classList.remove("correct-voice")
+    micInput.classList.remove("wrong-voice")
+}
+
+let correct = document.querySelector(".correct")
+let wrong = document.querySelector(".test-btn.wrong")
+correct.addEventListener('click', (e)=>{correctVoice()})
+wrong.addEventListener('click', (e)=>{wrongVoice()})
