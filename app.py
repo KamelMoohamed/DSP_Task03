@@ -24,10 +24,10 @@ def predict():
         f.save(file_path)
 
         processing = Processing()
-        isOpen, person = processing.predict_pipelines(file_path)
+        sentence, person = processing.predict_pipelines(file_path)
         return jsonify({
-            "person": "Others",
-            "sentence": "Others",
+            "person": sentence,
+            "sentence": person,
         }), 200
     return 400
 

@@ -1,7 +1,14 @@
 from processing.Song import Song
 import numpy as np
+import pickle
 
 class Processing:
+    def __init__(self):
+        self.model1Scaler = pickle.load(open("model1_scaler.bin", 'rb'))
+        self.model1Scaler = pickle.load(open("model2_scaler.bin", 'rb'))
+        self.model1 = pickle.load(open("model1.sav", 'rb'))
+        self.model2 = pickle.load(open("model2.sav", 'rb'))
+    
     def predict_pipelines(self, file):
         song = Song(file)
         lst1 = [song.max_pitch, song.avg_pitch, song.var_pitch, song.max_lpc, song.avg_lpc, song.var_lpc, 
@@ -13,15 +20,21 @@ class Processing:
                 song.poly_features_mean, song.poly_features_var, song.spec_bw_mean, song.spec_bw_var, 
                 song.rmse_mean, song.rmse_var, song.getFeature_chroma(), song.getFeature_mfcc(), 
                 song.getFeature_mels_spectorgram()]
+
         sentenceModelInputs = np.array(lst1)
         personsModelInputs = np.array(lst1)
 
-        # TODO: Scale the input with Standard Scaler
-        # TODO: Predict with both models
-        isOpen = True
-        personIndex = 0
-        person = self.process_output(personIndex)
-        return isOpen, person
+        sentenceModelInputs = self.model1Scaler(sentenceModelInputs)
+        personsModelInputs = self.model1Scaler(personsModelInputs)
 
-    def process_output(self, labelIndex):
+        # TODO: Predict with both models
+        sentence = self.process_output1(self.model1.predict(sentenceModelInputs))
+        personIndex = 0
+        person = self.process_output2(personIndex)
+        return sentence, person
+
+    def process_output1(self, labelIndex):
+        return ["Open", "Close", "Others"][labelIndex]
+
+    def process_output2(self, labelIndex):
         return ["Kamel", "Abdelrahman", "Sama", "Yousr", "Others"][labelIndex]
