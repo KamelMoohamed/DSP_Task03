@@ -31,13 +31,13 @@ class Processing:
 
         # TODO: Predict with both models
         # prediction1 = self.model1.predict(np.array(sentenceModelInputs))
-        prediction2 = self.model2.predict(np.array(personsModelInputs))
+        prediction2 = self.model1.predict(np.array(personsModelInputs))
         
         # print(prediction1)
         print(prediction2)
         sentence = self.process_output1(0)
         personIndex = 0
-        person = self.process_output2(prediction2[0])
+        person = self.process_output2(prediction2)
         return sentence, person
 
     def process_output1(self, labelIndex):
