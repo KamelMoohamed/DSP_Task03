@@ -25,14 +25,14 @@ class Processing:
 
         sentenceModelInputs = np.array(lst1).reshape(1,-1)
         personsModelInputs = np.array(lst1).reshape(1,-1)
-
+        print("hhhhhh")
         # sentenceModelInputs = self.model1Scaler.transform(sentenceModelInputs)
         personsModelInputs = self.model2Scaler.transform(personsModelInputs)
-
+        print("hhhhhh")
         # TODO: Predict with both models
         # prediction1 = self.model1.predict(np.array(sentenceModelInputs))
         prediction2 = self.model2.predict(np.array(personsModelInputs))
-        
+        print("hhhhhh")
         # print(prediction1)
         print(prediction2)
         sentence = self.process_output1(0)
