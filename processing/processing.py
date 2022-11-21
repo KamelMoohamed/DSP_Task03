@@ -13,7 +13,6 @@ class Processing:
                 song.poly_features_mean, song.poly_features_var, song.spec_bw_mean, song.spec_bw_var, 
                 song.rmse_mean, song.rmse_var, song.getFeature_chroma(), song.getFeature_mfcc(), 
                 song.getFeature_mels_spectorgram()]
-            
         sentenceModelInputs = np.array(lst1)
         personsModelInputs = np.array(lst1)
 

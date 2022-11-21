@@ -23,11 +23,11 @@ def predict():
         file_path += '.wav'
         f.save(file_path)
 
-        # processing = Processing()
-        # isOpen, person = processing.predict_pipelines(file_path)
+        processing = Processing()
+        isOpen, person = processing.predict_pipelines(file_path)
         return jsonify({
-            "person":"Kamel",
-            "sentence":"Open",
+            "person": person,
+            "sentence": isOpen,
         }), 200
     return 400
 

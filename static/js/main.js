@@ -1,3 +1,14 @@
+//webkitURL is deprecated but nevertheless
+URL = window.URL || window.webkitURL;
+
+var gumStream; 						
+var rec; 							
+var input; 	
+var AudioContext = window.AudioContext || window.webkitAudioContext;
+var audioContext 
+var constraints = { audio: true, video:false }
+
+
 // import ajax from 'ajax'
 let doorHandle = document.querySelector(".door-handle");
 let windowHandle = document.querySelector(".window-handle");
@@ -40,29 +51,16 @@ micInput.addEventListener("click", (e) => {
   }
 });
 
-var recorder;
-window.onload = function () {
-  recordButton = document.getElementById("record");
-  navigator.mediaDevices.getUserMedia({ audio: true }).then(
-    function (stream) {
-      recordButton.addEventListener("click", (e) => {
-        if (!e.target.classList.contains("mic-input-active")) {
-          stopRecording();
-        } else {
-          startRecording();
-        }
-      });
-      var options = { mimeType: "audio/webm" };
-      recorder = new MediaRecorder(stream, options);
-      recorder.addEventListener("dataavailable", (record) => {
-        onRecordingReady(record);
-      });
-    },
-    function () {
-      document.querySelector("#audioMediaNotAvailable").show;
-    }
-  );
-};
+
+recordButton = document.getElementById("record");
+recordButton.addEventListener("click", (e) => {
+  if (!e.target.classList.contains("mic-input-active")) {
+    stopRecording();
+  } else {
+    startRecording();
+  }
+});
+
 
 function readURL(file) {
   var reader = new FileReader();
@@ -70,14 +68,38 @@ function readURL(file) {
   return reader;
 }
 
-function startRecording() {recorder.start();}
-function stopRecording() {recorder.stop();}
+function startRecording() {
+  var constraints = {
+    audio: true,
+    video: false,
+  };
+  navigator.mediaDevices.getUserMedia(constraints).then(function (stream) {
+      gumStream=stream
+      audioContext = new AudioContext();
+      input = audioContext.createMediaStreamSource(stream);
+      rec = new Recorder(input, {numChannels: 1,});
+      rec.record();
+    })
+    .catch(function (err) {});
+    }
+
+function stopRecording() {
+  rec.stop();
+	gumStream.getAudioTracks()[0].stop();
+	rec.exportWAV(createDownloadLink);
+}
+
 var audioFile;
-function onRecordingReady(record) {
-  var audio = document.getElementById("audio");
-  audioFile = record.data;
+function createDownloadLink(blob) {
+  var audio = document.getElementById('audio');
+  var url = URL.createObjectURL(blob);
+  audio.src=url
+  console.log(audio.src)
+  audio.play();
+
+  // reader = readURL(audioFile);
   let formData = new FormData();
-  formData.append("file", audioFile)
+  formData.append("file", blob)
 
   $.ajax({
     type: "POST",
@@ -88,6 +110,7 @@ function onRecordingReady(record) {
     processData: false,
     async: true,
     success: function (data) {
+      console.log(data)
       if(data.person != "Others" && data.sentence != "Others"){
         data.sentence == "Open" ? openDoor() : closeDoor()
       } else {
@@ -95,9 +118,6 @@ function onRecordingReady(record) {
       }
     },
   });
-
-  audio.src = URL.createObjectURL(audioFile);
-  audio.play();
 }
 
 let ironDoor = document.querySelector(".iron-door");
