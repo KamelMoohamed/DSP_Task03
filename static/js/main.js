@@ -36,9 +36,7 @@ micInput.addEventListener("click", (e) => {
   micInput.classList.toggle("mic-input-active");
   if (!door.classList.contains("door-open")) {
     document.querySelector(".door-window").classList.toggle("door-window-open");
-    document
-      .querySelector(".window-handle")
-      .classList.toggle("window-handle-open");
+    document.querySelector(".window-handle").classList.toggle("window-handle-open");
   }
 });
 
@@ -72,31 +70,29 @@ function readURL(file) {
   return reader;
 }
 
-function startRecording() {
-  recorder.start();
-}
-function stopRecording() {
-  recorder.stop();
-}
+function startRecording() {recorder.start();}
+function stopRecording() {recorder.stop();}
 var audioFile;
 function onRecordingReady(record) {
   var audio = document.getElementById("audio");
   audioFile = record.data;
-
-  // reader = readURL(audioFile);
   let formData = new FormData();
   formData.append("file", audioFile)
 
   $.ajax({
     type: "POST",
-    url: "http://127.0.0.1:5000/predict",
+    url: "/predict",
     data: formData,
     contentType: false,
     cache: false,
     processData: false,
     async: true,
     success: function (data) {
-      console.log("TESTTTTTTTTTTTTT");
+      if(data.person != "Others" && data.sentence != "Others"){
+        data.sentence == "Open" ? openDoor() : closeDoor()
+      } else {
+        !door.classList.contains("door-open") ? ironDoorClose() & wrongVoice() : wrongVoice()
+      }
     },
   });
 
@@ -105,28 +101,47 @@ function onRecordingReady(record) {
 }
 
 let ironDoor = document.querySelector(".iron-door");
-function correctVoice() {
-  door.classList.toggle("door-open");
+function openDoor() {
+  door.classList.add("door-open");
+  micInputCorrect()
+}
+
+function closeDoor() {
+  door.classList.remove("door-open");
+  micInputCorrect()
+}
+
+function micInputCorrect() {
   micInput.classList.add("correct-voice");
   setTimeout(restMicBtn, 2000);
 }
 
-function wrongVoice() {
-  micInput.classList.toggle("wrong-voice");
-  ironDoor.classList.toggle("iron-door-close");
+function micInputWrong() {
+  micInput.classList.add("wrong-voice");
   setTimeout(restMicBtn, 2000);
 }
 
 function restMicBtn() {
   micInput.classList.remove("correct-voice");
-  // micInput.classList.remove("wrong-voice")
+  micInput.classList.remove("wrong-voice");
 }
+
+function wrongVoice() {
+  micInput.classList.add("wrong-voice");
+  setTimeout(restMicBtn, 2000);
+}
+
+function ironDoorClose() {
+  ironDoor.classList.toggle("iron-door-close");
+}
+
 
 let correct = document.querySelector(".correct");
 let wrong = document.querySelector(".test-btn.wrong");
 correct.addEventListener("click", (e) => {
-  correctVoice();
+  openDoor();
 });
 wrong.addEventListener("click", (e) => {
   wrongVoice();
+  ironDoorClose()
 });
