@@ -70,6 +70,10 @@ function stopRecording() {
 	rec.exportWAV(sendWAVtoBack);
 }
 
+let userName = document.querySelector(".user-name")
+let currentStatus = document.querySelector(".current-status")
+let progCircles = document.querySelectorAll(".circle")
+let formData = new FormData();
 function sendWAVtoBack(blob) {
   // var audio = document.getElementById('audio');
   // var url = URL.createObjectURL(blob);
@@ -79,10 +83,6 @@ function sendWAVtoBack(blob) {
   // audio.play();
 
 
-  let userName = document.querySelector(".user-name")
-  let currentStatus = document.querySelector(".current-status")
-  let progCircles = document.querySelectorAll(".circle")
-  let formData = new FormData();
   formData.append("file", blob)
 
   $.ajax({
@@ -100,7 +100,9 @@ function sendWAVtoBack(blob) {
         userName.innerHTML = `Welcome ${data.person}`
         currentStatus.innerHTML = `Right Password`
         progCircles.forEach((circle) => circle.classList.add("two-right-conds"));
+        setTimeout(restProgCircles, 2000);
       } else {
+        setTimeout(restProgCircles, 2000);
         !door.classList.contains("door-open") ? ironDoorClose() & wrongVoice() : wrongVoice()
         if(data.person == "Others" && data.sentence == "Others"){
            userName.innerHTML = `Who Are You?!`; 
@@ -147,6 +149,11 @@ function micInputWrong() {
 function restMicBtn() {
   micInput.classList.remove("correct-voice");
   micInput.classList.remove("wrong-voice");
+}
+
+function restProgCircles() {
+  progCircles.forEach((circle) => circle.className = ("circle"));
+  // console.log(progCircles)
 }
 
 function wrongVoice() {

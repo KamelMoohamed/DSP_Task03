@@ -26,7 +26,7 @@ def predict():
         processing = Processing()
         isOpen, person = processing.predict_pipelines(file_path)
         return jsonify({
-            "person": person,
+            "person": "Others",
             "sentence": "Others",
         }), 200
     return 400
