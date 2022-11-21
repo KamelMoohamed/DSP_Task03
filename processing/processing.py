@@ -1,13 +1,15 @@
 from processing.Song import Song
 import numpy as np
 import pickle
+import os
 
 class Processing:
     def __init__(self):
-        self.model1Scaler = pickle.load(open("model1_scaler.bin", 'rb'))
-        self.model1Scaler = pickle.load(open("model2_scaler.bin", 'rb'))
-        self.model1 = pickle.load(open("model1.sav", 'rb'))
-        self.model2 = pickle.load(open("model2.sav", 'rb'))
+        print(os.path.dirname(os.path.abspath(__file__)))
+        self.model1Scaler = pickle.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "model1_scaler.bin"), 'rb'))
+        self.model1Scaler = pickle.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "model1_scaler.bin"), 'rb'))
+        self.model1 = pickle.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "model1.sav"), 'rb'))
+        self.model2 = pickle.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "model1.sav"), 'rb'))
     
     def predict_pipelines(self, file):
         song = Song(file)
@@ -21,14 +23,16 @@ class Processing:
                 song.rmse_mean, song.rmse_var, song.getFeature_chroma(), song.getFeature_mfcc(), 
                 song.getFeature_mels_spectorgram()]
 
-        sentenceModelInputs = np.array(lst1)
-        personsModelInputs = np.array(lst1)
+        sentenceModelInputs = np.array(lst1).reshape(1,-1)
+        personsModelInputs = np.array(lst1).reshape(1,-1)
 
-        sentenceModelInputs = self.model1Scaler(sentenceModelInputs)
-        personsModelInputs = self.model1Scaler(personsModelInputs)
+        sentenceModelInputs = self.model1Scaler.transform(sentenceModelInputs)
+        personsModelInputs = self.model1Scaler.transform(personsModelInputs)
 
         # TODO: Predict with both models
-        sentence = self.process_output1(self.model1.predict(sentenceModelInputs))
+        x = self.model1.predict(np.array(sentenceModelInputs))
+        print(x)
+        sentence = self.process_output1(x)
         personIndex = 0
         person = self.process_output2(personIndex)
         return sentence, person
