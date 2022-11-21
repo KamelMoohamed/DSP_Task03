@@ -1,15 +1,3 @@
-//webkitURL is deprecated but nevertheless
-URL = window.URL || window.webkitURL;
-
-var gumStream; 						
-var rec; 							
-var input; 	
-var AudioContext = window.AudioContext || window.webkitAudioContext;
-var audioContext 
-var constraints = { audio: true, video:false }
-
-
-// import ajax from 'ajax'
 let doorHandle = document.querySelector(".door-handle");
 let windowHandle = document.querySelector(".window-handle");
 let door = document.querySelector(".door");
@@ -51,7 +39,6 @@ micInput.addEventListener("click", (e) => {
   }
 });
 
-
 recordButton = document.getElementById("record");
 recordButton.addEventListener("click", (e) => {
   if (!e.target.classList.contains("mic-input-active")) {
@@ -61,18 +48,12 @@ recordButton.addEventListener("click", (e) => {
   }
 });
 
-
-function readURL(file) {
-  var reader = new FileReader();
-  reader.readAsDataURL(file);
-  return reader;
-}
+URL = window.URL || window.webkitURL;
+var gumStream, rec, input, audioContext; 						
+var AudioContext = window.AudioContext || window.webkitAudioContext;
 
 function startRecording() {
-  var constraints = {
-    audio: true,
-    video: false,
-  };
+  var constraints = {audio: true, video: false};
   navigator.mediaDevices.getUserMedia(constraints).then(function (stream) {
       gumStream=stream
       audioContext = new AudioContext();
@@ -86,18 +67,21 @@ function startRecording() {
 function stopRecording() {
   rec.stop();
 	gumStream.getAudioTracks()[0].stop();
-	rec.exportWAV(createDownloadLink);
+	rec.exportWAV(sendWAVtoBack);
 }
 
-var audioFile;
-function createDownloadLink(blob) {
-  var audio = document.getElementById('audio');
-  var url = URL.createObjectURL(blob);
-  audio.src=url
-  console.log(audio.src)
-  audio.play();
+function sendWAVtoBack(blob) {
+  // var audio = document.getElementById('audio');
+  // var url = URL.createObjectURL(blob);
+  // audio.src=url
+  // console.log(blob)
+  // console.log(audio)
+  // audio.play();
 
-  // reader = readURL(audioFile);
+
+  let userName = document.querySelector(".user-name")
+  let currentStatus = document.querySelector(".current-status")
+  let progCircles = document.querySelectorAll(".circle")
   let formData = new FormData();
   formData.append("file", blob)
 
@@ -113,8 +97,27 @@ function createDownloadLink(blob) {
       console.log(data)
       if(data.person != "Others" && data.sentence != "Others"){
         data.sentence == "Open" ? openDoor() : closeDoor()
+        userName.innerHTML = `Welcome ${data.person}`
+        currentStatus.innerHTML = `Right Password`
+        progCircles.forEach((circle) => circle.classList.add("two-right-conds"));
       } else {
         !door.classList.contains("door-open") ? ironDoorClose() & wrongVoice() : wrongVoice()
+        if(data.person == "Others" && data.sentence == "Others"){
+           userName.innerHTML = `Who Are You?!`; 
+           currentStatus.innerHTML = `Wrong Password`
+           progCircles.forEach((circle) => circle.classList.add("two-wrong-conds"));
+           console.log(progCircles)
+          } else if (data.person != "Others" && data.sentence == "Others"){
+              progCircles[0].classList.add("one-cond");
+              userName.innerHTML = `${data.person}`;
+              currentStatus.innerHTML = `it seems i can't hear you`
+            }
+            else {
+              progCircles[0].classList.add("one-cond");
+              userName.innerHTML = `But who Are You?!`;
+              currentStatus.innerHTML = `Right Password`
+                  }
+        
       }
     },
   });
@@ -154,7 +157,6 @@ function wrongVoice() {
 function ironDoorClose() {
   ironDoor.classList.toggle("iron-door-close");
 }
-
 
 let correct = document.querySelector(".correct");
 let wrong = document.querySelector(".test-btn.wrong");

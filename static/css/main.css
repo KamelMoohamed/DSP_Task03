@@ -14,6 +14,7 @@ body{
     background-size:107rem;
     height: 100vh;
     overflow: hidden;
+    font-family: 'Roboto', sans-serif;
 }
 
 .door-container{
@@ -397,5 +398,69 @@ body{
     background-color: greenyellow;
 }
 .test-btn.wrong{
+    background-color: red;
+}
+
+.user-data{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+    width: 12rem;
+    height: 18rem;
+    position: absolute;
+    top: 50.2%;
+    left: 50%;
+    transform: translate(108.4%, 1%);
+    border-radius: var(--border-radius);
+    border: 10px solid var(--shade-color);
+    border-bottom: transparent;
+    z-index: -3;
+}
+
+.circles{
+    width: 50%;
+    display: flex;
+    justify-content: space-evenly;
+    position: absolute;
+    top: 5%
+    
+}
+
+.circle{
+    width: 1rem;
+    height: 1rem;
+    background-color: var(--shade-color);
+    border-radius: 50%;
+    transition: 0.3s ease-in-out;
+}
+
+.data-text{
+    text-align: center;
+}
+
+.user-data .data{
+    color: white;
+    margin-top: 10px;
+}
+
+.user-data .user-name{
+    font-weight: bold;
+}
+
+.user-data .status{
+    font-size: 12px;
+}
+
+.one-cond{
+    background-color: var(--primary-color) !important;
+}
+
+.two-right-conds{
+    background-color: greenyellow;
+}
+
+.two-wrong-conds{
     background-color: red;
 }
