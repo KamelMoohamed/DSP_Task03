@@ -75,6 +75,7 @@ let currentStatus = document.querySelector(".current-status")
 let progCircles = document.querySelectorAll(".circle")
 let formData = new FormData();
 function sendWAVtoBack(blob) {
+  formData.delete('file');
   // var audio = document.getElementById('audio');
   // var url = URL.createObjectURL(blob);
   // audio.src=url

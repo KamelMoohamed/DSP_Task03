@@ -7,9 +7,9 @@ import joblib
 class Processing:
     def __init__(self):
         print(os.path.dirname(os.path.abspath(__file__)))
-        self.model1Scaler = pickle.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "model1_scaler.bin"), 'rb'))
+        self.model1Scaler = joblib.load(os.path.join(os.path.dirname(os.path.abspath(__file__)), "scaler1.joblib"))
         self.model2Scaler = joblib.load(os.path.join(os.path.dirname(os.path.abspath(__file__)), "scaler.joblib"))
-        self.model1 = pickle.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "model1.sav"), 'rb'))
+        self.model1 = joblib.load(os.path.join(os.path.dirname(os.path.abspath(__file__)), "model1.joblib"))
         self.model2 = joblib.load(os.path.join(os.path.dirname(os.path.abspath(__file__)), "model2.joblib"))
     
     def predict_pipelines(self, file):
@@ -25,17 +25,14 @@ class Processing:
 
         sentenceModelInputs = np.array(lst1).reshape(1,-1)
         personsModelInputs = np.array(lst1).reshape(1,-1)
-        print("hhhhhh")
-        # sentenceModelInputs = self.model1Scaler.transform(sentenceModelInputs)
+
+        sentenceModelInputs = self.model1Scaler.transform(sentenceModelInputs)
         personsModelInputs = self.model2Scaler.transform(personsModelInputs)
-        print("hhhhhh")
-        # TODO: Predict with both models
-        # prediction1 = self.model1.predict(np.array(sentenceModelInputs))
+
+        prediction1 = self.model1.predict(np.array(sentenceModelInputs))
         prediction2 = self.model2.predict(np.array(personsModelInputs))
-        print("hhhhhh")
-        # print(prediction1)
-        print(prediction2)
-        sentence = self.process_output1(0)
+
+        sentence = self.process_output1(prediction1[0])
         personIndex = 0
         person = self.process_output2(prediction2[0])
         return sentence, person
