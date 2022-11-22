@@ -82,7 +82,6 @@ function sendWAVtoBack(blob) {
   // console.log(audio)
   // audio.play();
 
-
   formData.append("file", blob)
 
   $.ajax({

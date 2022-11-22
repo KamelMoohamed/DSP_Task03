@@ -2,14 +2,15 @@ from processing.Song import Song
 import numpy as np
 import pickle
 import os
+import joblib
 
 class Processing:
     def __init__(self):
         print(os.path.dirname(os.path.abspath(__file__)))
         self.model1Scaler = pickle.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "model1_scaler.bin"), 'rb'))
-        self.model2Scaler = pickle.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "std_scaler.bin"), 'rb'))
+        self.model2Scaler = joblib.load(os.path.join(os.path.dirname(os.path.abspath(__file__)), "scaler.joblib"))
         self.model1 = pickle.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "model1.sav"), 'rb'))
-        self.model2 = pickle.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "model2.sav"), 'rb'))
+        self.model2 = joblib.load(os.path.join(os.path.dirname(os.path.abspath(__file__)), "model2.joblib"))
     
     def predict_pipelines(self, file):
         song = Song(file)
@@ -20,8 +21,7 @@ class Processing:
                 song.mfcc_delta_var, song.Contrast, song.Contrast_var, song.Rolloff, song.Rolloff_var, 
                 song.Zrate, song.Zrate_var, song.Cent, song.Cent_var, song.tonnetz_mean, song.tonnetz_var, 
                 song.poly_features_mean, song.poly_features_var, song.spec_bw_mean, song.spec_bw_var, 
-                song.rmse_mean, song.rmse_var, song.getFeature_chroma(), song.getFeature_mfcc(), 
-                song.getFeature_mels_spectorgram()]
+                song.rmse_mean, song.rmse_var]
 
         sentenceModelInputs = np.array(lst1).reshape(1,-1)
         personsModelInputs = np.array(lst1).reshape(1,-1)
