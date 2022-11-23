@@ -3,15 +3,23 @@ import numpy as np
 import pickle
 import os
 import joblib
+import librosa
 
 class Processing:
     def __init__(self):
         print(os.path.dirname(os.path.abspath(__file__)))
         self.model1Scaler = joblib.load(os.path.join(os.path.dirname(os.path.abspath(__file__)), "scaler1.joblib"))
-        self.model2Scaler = joblib.load(os.path.join(os.path.dirname(os.path.abspath(__file__)), "scaler.joblib"))
+        self.model2Scaler = joblib.load(os.path.join(os.path.dirname(os.path.abspath(__file__)), "scaler2.joblib"))
         self.model1 = joblib.load(os.path.join(os.path.dirname(os.path.abspath(__file__)), "model1.joblib"))
         self.model2 = joblib.load(os.path.join(os.path.dirname(os.path.abspath(__file__)), "model2.joblib"))
     
+    def features_extractor(self, file):
+        audio, sample_rate = librosa.load(file, res_type='kaiser_fast') 
+        mfccs_features = librosa.feature.mfcc(y=audio, sr=sample_rate, n_mfcc=40)
+        mfccs_scaled_features = np.mean(mfccs_features.T,axis=0)
+    
+        return mfccs_scaled_features
+
     def predict_pipelines(self, file):
         song = Song(file)
         lst1 = [song.max_pitch, song.avg_pitch, song.var_pitch, song.max_lpc, song.avg_lpc, song.var_lpc, 
@@ -24,7 +32,7 @@ class Processing:
                 song.rmse_mean, song.rmse_var]
 
         sentenceModelInputs = np.array(lst1).reshape(1,-1)
-        personsModelInputs = np.array(lst1).reshape(1,-1)
+        personsModelInputs = np.array(self.features_extractor(file)).reshape(1, -1)
 
         sentenceModelInputs = self.model1Scaler.transform(sentenceModelInputs)
         personsModelInputs = self.model2Scaler.transform(personsModelInputs)
@@ -41,4 +49,4 @@ class Processing:
         return ["Open", "Close", "Others"][labelIndex]
 
     def process_output2(self, labelIndex):
-        return ["Kamel", "Abdelrahman", "Sama", "Yousr", "Others"][labelIndex]
+        return ["Abdelrahman", "Kamel", "Sama", "Yousr", "Others"][labelIndex]
