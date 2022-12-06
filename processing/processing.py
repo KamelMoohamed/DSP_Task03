@@ -60,7 +60,8 @@ class Processing:
         sentenceModelInputs.append(x3)
 
         sentenceModelInputs = np.array(sentenceModelInputs).reshape(1, -1)
-        personsModelInputs = np.array(list(self.features_extractor(file, n_samples = 40))).reshape(1, -1)
+        personsModelInputs = sentenceModelInputs
+        # personsModelInputs = np.array(list(self.features_extractor(file, n_samples = 40))).reshape(1, -1)
 
         sentenceModelInputs = self.model1Scaler.transform(sentenceModelInputs)
         personsModelInputs = self.model2Scaler.transform(personsModelInputs)
