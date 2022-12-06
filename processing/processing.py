@@ -13,9 +13,9 @@ class Processing:
         self.model1 = joblib.load(os.path.join(os.path.dirname(os.path.abspath(__file__)), "model1.joblib"))
         self.model2 = joblib.load(os.path.join(os.path.dirname(os.path.abspath(__file__)), "model2.joblib"))
     
-    def features_extractor(self, file):
+    def features_extractor(self, file, n_samples):
         audio, sample_rate = librosa.load(file, res_type='kaiser_fast') 
-        mfccs_features = librosa.feature.mfcc(y=audio, sr=sample_rate, n_mfcc=40)
+        mfccs_features = librosa.feature.mfcc(y=audio, sr=sample_rate, n_mfcc=n_samples)
         mfccs_scaled_features = np.mean(mfccs_features.T,axis=0)
     
         return mfccs_scaled_features
@@ -51,7 +51,7 @@ class Processing:
         #         song.poly_features_mean, song.poly_features_var, song.spec_bw_mean, song.spec_bw_var, 
         #         song.rmse_mean, song.rmse_var]
 
-        x = list(self.features_extractor(file))
+        x = list(self.features_extractor(file, n_samples = 46))
         x1 = list(self.features_extractor_lpc(file))
         x2 = self.features_extractor_rms(file)
         x3 = self.features_extractor_plp(file)
@@ -60,7 +60,7 @@ class Processing:
         sentenceModelInputs.append(x3)
 
         sentenceModelInputs = np.array(sentenceModelInputs).reshape(1, -1)
-        personsModelInputs = np.array(x).reshape(1, -1)
+        personsModelInputs = np.array(list(self.features_extractor(file, n_samples = 40))).reshape(1, -1)
 
         sentenceModelInputs = self.model1Scaler.transform(sentenceModelInputs)
         personsModelInputs = self.model2Scaler.transform(personsModelInputs)
