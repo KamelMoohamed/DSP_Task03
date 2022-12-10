@@ -11,6 +11,14 @@ from python_speech_features import mfcc
 
 class Processing:
     def __init__(self):
+        self.models1 = [
+            joblib.load(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Open The Door.joblib")),
+            joblib.load(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Open The Book.joblib")),
+            joblib.load(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Close The Window.joblib")),
+            joblib.load(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Open The Window.joblib")),
+            joblib.load(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Close The Door.joblib")),
+            joblib.load(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Others.joblib"))
+        ]
         self.models2 = [
             joblib.load(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Kamel.joblib")),
             joblib.load(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Abdelrahman.joblib")),
@@ -49,24 +57,27 @@ class Processing:
         return combined
     
     def predict_pipelines(self, file):
-        person = self.predict_model2(file)
-            
-        return person
-
-
-    def predict_model2(self, file):
-        # sr, audio = read(file)
         audio, sr = librosa.load(file)
         vector = self.extract_features(audio, sr, winlen = 0.025)
+
+        sentence = self.predict_model1(vector)
+        person = self.predict_model2(vector)
+
+        print(sentence)
+        print(person)
+            
+        return sentence, person
+
+
+    def predict_model2(self, vector):
+
         log_likelihood = np.zeros(len(self.models2))
         for i in range(len(self.models2)):
             gmm = self.models2[i] 
             scores = np.array(gmm.score(vector))
             log_likelihood[i] = scores.sum()
 
-        print(log_likelihood)
         flag = max(log_likelihood) - log_likelihood
-        print(flag)
         testFlag = True
         for i in range(len(flag)):
             if log_likelihood[i] == max(log_likelihood):
@@ -79,6 +90,36 @@ class Processing:
             winner = 4
 
         return self.process_output2(winner)
+
+
+    def predict_model1(self, vector):
+        log_likelihood = np.zeros(len(self.models1))
+        for i in range(len(self.models1)):
+            gmm = self.models1[i] 
+            scores = np.array(gmm.score(vector))
+            log_likelihood[i] = scores.sum()
+
+        winner = np.argmax(log_likelihood)
+
+        # flag = max(log_likelihood) - log_likelihood
+        # testFlag = True
+        # for i in range(len(flag)):
+        #     if log_likelihood[i] == max(log_likelihood):
+        #         continue
+        #     if abs(flag[i]) < 0.7:
+        #         testFlag = False
+
+        print(log_likelihood)
+        # print(flag)
+        # if testFlag:
+        #     winner = np.argmax(log_likelihood)
+        # else:
+        #     winner = 5
+
+        if winner != 0:
+            winner = 5
+
+        return self.process_output1(winner)
 
     def predict_svm(self, file):
         x = list(self.features_extractor(file, n_samples = 46))
@@ -108,6 +149,10 @@ class Processing:
 
         return sentence, person
 
+    
+    def process_output1(self, labelIndex):
+        return ['Open The Door', 'Open The Book', 'Close The Window', \
+            'Open The Window', 'Close The Door', 'Others'][labelIndex]
 
     def process_output2(self, labelIndex):
         return ["Kamel", "Abdelrahman", "Sama", "Yousr", "Others"][labelIndex]

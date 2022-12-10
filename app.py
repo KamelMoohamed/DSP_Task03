@@ -24,7 +24,9 @@ def predict():
         f.save(file_path)
 
         processing = Processing()
-        person = processing.predict_pipelines(file_path)
+        sentence, person = processing.predict_pipelines(file_path)
+        if(sentence == 'Others'):
+            person = 'Others'
         return jsonify({
             "person": person
             }), 200
