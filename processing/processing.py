@@ -5,7 +5,6 @@ import os
 import joblib
 import librosa
 from sklearn import preprocessing
-from scipy.io.wavfile import read
 from python_speech_features import mfcc
 
 
@@ -68,7 +67,7 @@ class Processing:
 
     def predict_model2(self, file):
         audio, sr = librosa.load(file)
-        vector = self.extract_features(audio, sr, nfft = 1200, winlen = 0.025)
+        vector = self.extract_features(audio, sr, nfft = 2205, winlen = 0.05)
         log_likelihood = np.zeros(len(self.models2))
         for i in range(len(self.models2)):
             gmm = self.models2[i] 
