@@ -35,7 +35,9 @@ micInput.addEventListener("click", (e) => {
   micInput.classList.toggle("mic-input-active");
   if (!door.classList.contains("door-open")) {
     document.querySelector(".door-window").classList.toggle("door-window-open");
-    document.querySelector(".window-handle").classList.toggle("window-handle-open");
+    document
+      .querySelector(".window-handle")
+      .classList.toggle("window-handle-open");
   }
 });
 
@@ -44,38 +46,41 @@ recordButton.addEventListener("click", (e) => {
   if (!e.target.classList.contains("mic-input-active")) {
     stopRecording();
   } else {
+    // closeDoor();
     startRecording();
   }
 });
 
 URL = window.URL || window.webkitURL;
-var gumStream, rec, input, audioContext; 						
+var gumStream, rec, input, audioContext;
 var AudioContext = window.AudioContext || window.webkitAudioContext;
 
 function startRecording() {
-  var constraints = {audio: true, video: false};
-  navigator.mediaDevices.getUserMedia(constraints).then(function (stream) {
-      gumStream=stream
+  var constraints = { audio: true, video: false };
+  navigator.mediaDevices
+    .getUserMedia(constraints)
+    .then(function (stream) {
+      gumStream = stream;
       audioContext = new AudioContext();
       input = audioContext.createMediaStreamSource(stream);
-      rec = new Recorder(input, {numChannels: 1,});
+      rec = new Recorder(input, { numChannels: 1 });
       rec.record();
     })
     .catch(function (err) {});
-    }
+}
 
 function stopRecording() {
   rec.stop();
-	gumStream.getAudioTracks()[0].stop();
-	rec.exportWAV(sendWAVtoBack);
+  gumStream.getAudioTracks()[0].stop();
+  rec.exportWAV(sendWAVtoBack);
 }
 
-let userName = document.querySelector(".user-name")
-let currentStatus = document.querySelector(".current-status")
-let progCircles = document.querySelectorAll(".circle")
+let userName = document.querySelector(".user-name");
+let currentStatus = document.querySelector(".current-status");
+let progCircles = document.querySelectorAll(".circle");
 let formData = new FormData();
 function sendWAVtoBack(blob) {
-  formData.delete('file');
+  formData.delete("file");
   // var audio = document.getElementById('audio');
   // var url = URL.createObjectURL(blob);
   // audio.src=url
@@ -83,7 +88,7 @@ function sendWAVtoBack(blob) {
   // console.log(audio)
   // audio.play();
 
-  formData.append("file", blob)
+  formData.append("file", blob);
 
   $.ajax({
     type: "POST",
@@ -94,32 +99,24 @@ function sendWAVtoBack(blob) {
     processData: false,
     async: true,
     success: function (data) {
-      console.log(data)
-      if(data.person != "Others" && data.sentence != "Others"){
-        data.sentence == "Open" ? openDoor() : closeDoor()
-        userName.innerHTML = `Welcome ${data.person}`
-        currentStatus.innerHTML = `Right Password`
-        progCircles.forEach((circle) => circle.classList.add("two-right-conds"));
+      if (data.person != "Others") {
+        openDoor();
+        userName.innerHTML = `Welcome ${data.person}`;
+        currentStatus.innerHTML = `Right Password`;
+        progCircles.forEach((circle) =>
+          circle.classList.add("two-right-conds")
+        );
         setTimeout(restProgCircles, 2000);
       } else {
         setTimeout(restProgCircles, 2000);
-        !door.classList.contains("door-open") ? ironDoorClose() & wrongVoice() : wrongVoice()
-        if(data.person == "Others" && data.sentence == "Others"){
-           userName.innerHTML = `Who Are You?!`; 
-           currentStatus.innerHTML = `Wrong Password`
-           progCircles.forEach((circle) => circle.classList.add("two-wrong-conds"));
-           console.log(progCircles)
-          } else if (data.person != "Others" && data.sentence == "Others"){
-              progCircles[0].classList.add("one-cond");
-              userName.innerHTML = `${data.person}`;
-              currentStatus.innerHTML = `it seems i can't hear you`
-            }
-            else {
-              progCircles[0].classList.add("one-cond");
-              userName.innerHTML = `But who Are You?!`;
-              currentStatus.innerHTML = `Right Password`
-                  }
-        
+        !door.classList.contains("door-open")
+          ? ironDoorClose() & wrongVoice()
+          : wrongVoice();
+        currentStatus.innerHTML = `Wrong Password`;
+        userName.innerHTML = ``;
+        progCircles.forEach((circle) =>
+          circle.classList.add("two-wrong-conds")
+        );
       }
     },
   });
@@ -128,12 +125,12 @@ function sendWAVtoBack(blob) {
 let ironDoor = document.querySelector(".iron-door");
 function openDoor() {
   door.classList.add("door-open");
-  micInputCorrect()
+  micInputCorrect();
 }
 
 function closeDoor() {
   door.classList.remove("door-open");
-  micInputCorrect()
+  micInputCorrect();
 }
 
 function micInputCorrect() {
@@ -152,7 +149,7 @@ function restMicBtn() {
 }
 
 function restProgCircles() {
-  progCircles.forEach((circle) => circle.className = ("circle"));
+  progCircles.forEach((circle) => (circle.className = "circle"));
   // console.log(progCircles)
 }
 
@@ -167,10 +164,10 @@ function ironDoorClose() {
 
 let correct = document.querySelector(".correct");
 let wrong = document.querySelector(".test-btn.wrong");
-correct.addEventListener("click", (e) => {
-  openDoor();
-});
-wrong.addEventListener("click", (e) => {
-  wrongVoice();
-  ironDoorClose()
-});
+// correct.addEventListener("click", (e) => {
+//   openDoor();
+// });
+// wrong.addEventListener("click", (e) => {
+//   wrongVoice();
+//   ironDoorClose();
+// });
