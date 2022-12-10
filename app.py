@@ -24,13 +24,11 @@ def predict():
         f.save(file_path)
 
         processing = Processing()
-        sentence, person = processing.predict_pipelines(file_path)
+        person = processing.predict_pipelines(file_path)
         return jsonify({
-            "person": person,
-            "sentence": sentence
-        }), 200
+            "person": person
+            }), 200
     return 400
-
 
 
 if __name__ == '__main__':
