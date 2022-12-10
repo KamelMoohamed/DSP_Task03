@@ -49,19 +49,16 @@ class Processing:
         return deltas
 
 
-    def extract_features(self, audio,rate, winlen):
-        mfcc_feature = mfcc(audio,rate, winlen, 0.01, 20, nfft = 1200, appendEnergy = True)
+    def extract_features(self, audio, rate, nfft, winlen):
+        mfcc_feature = mfcc(audio,rate, winlen, 0.01, 20, nfft = nfft, appendEnergy = True)
         mfcc_feature = preprocessing.scale(mfcc_feature)
         delta = self.calculate_delta(mfcc_feature)
         combined = np.hstack((mfcc_feature, delta)) 
         return combined
     
     def predict_pipelines(self, file):
-        audio, sr = librosa.load(file)
-        vector = self.extract_features(audio, sr, winlen = 0.025)
-
-        sentence = self.predict_model1(vector)
-        person = self.predict_model2(vector)
+        sentence = self.predict_model1(file)
+        person = self.predict_model2(file)
 
         print(sentence)
         print(person)
@@ -69,8 +66,9 @@ class Processing:
         return sentence, person
 
 
-    def predict_model2(self, vector):
-
+    def predict_model2(self, file):
+        audio, sr = librosa.load(file)
+        vector = self.extract_features(audio, sr, nfft = 1200, winlen = 0.025)
         log_likelihood = np.zeros(len(self.models2))
         for i in range(len(self.models2)):
             gmm = self.models2[i] 
@@ -92,7 +90,9 @@ class Processing:
         return self.process_output2(winner)
 
 
-    def predict_model1(self, vector):
+    def predict_model1(self, file):
+        audio, sr = librosa.load(file)
+        vector = self.extract_features(audio, 44100, nfft = 2205, winlen = 0.05)
         log_likelihood = np.zeros(len(self.models1))
         for i in range(len(self.models1)):
             gmm = self.models1[i] 
