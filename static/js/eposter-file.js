@@ -169,15 +169,46 @@ function drawBarPlot(data1, data2, spectrogram1, spectrogram2) {
   var data2 = [trace2];
 
   var layout = {
+    title: {
+      text:'Model ',
+      font: {
+        family: 'Courier New, monospace',
+        size: 24
+      },  
+    },
     useResizeHandler: true,
-    responsive: true,
     height: 260,
     margin: {
-      l: 24,
+      l: 50,
       r: 10,
       t: 50,
-      b: 30,
+      b: 40,
     },
+    xaxis: {
+      title: {
+        text: 'labels',
+        font: {
+          family: 'Arial, sans-serif',
+          size: 18,
+          color: '#000522e0'
+        },
+        showticklabels: true,
+        tickfont: {
+          family: 'Old Standard TT, serif',
+          size: 14,
+          color: 'white'
+        },
+      },},
+      yaxis: {
+        title: {
+          text: 'precentage',
+          font: {
+            family: 'Arial, sans-serif',
+            size: 16,
+            color: '#000522e0'
+          }
+        }
+      },
     paper_bgcolor: "transparent",
     plot_bgcolor: "transparent",
     legend: {

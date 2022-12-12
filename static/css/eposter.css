@@ -34,7 +34,7 @@ body{
 	gap: 5%;
 }
 .barplot .barplot-content{
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.774);
 	width: 38%;
 	height: 35vh;
 	padding: 0px 5px;
@@ -51,7 +51,7 @@ body{
 }
 .spectrogram .spectrogram-content{
     display: flex;
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.774);
 	width: 38%;
 	height: 35vh;
 	padding: 0px 5px;
@@ -60,15 +60,6 @@ body{
     margin-top: 30px;
 	transition: all 200ms ease-in-out; 
 }
-.barplot .barplot-content:hover {
-	cursor: pointer;
-	background: rgba(255, 255, 255, 0.336);
-}
-.spectrogram .spectrogram-content:hover {
-	cursor: pointer;
-	background: rgba(255, 255, 255, 0.466);
-}
-
 .mic-input{
     position: fixed;
     display: flex;
