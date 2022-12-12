@@ -12,10 +12,10 @@ class Processing:
     def __init__(self):
         self.models1 = [
             joblib.load(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Open The Door.joblib")),
-            joblib.load(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Open The Book.joblib")),
-            joblib.load(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Close The Window.joblib")),
-            joblib.load(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Open The Window.joblib")),
             joblib.load(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Close The Door.joblib")),
+            joblib.load(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Open The Window.joblib")),
+            joblib.load(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Close The Window.joblib")),
+            joblib.load(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Open The Book.joblib")),
             joblib.load(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Others.joblib"))
         ]
         self.models2 = [
@@ -65,6 +65,25 @@ class Processing:
         return sentence, person
 
 
+    def predict_model1(self, file):
+        audio, sr = librosa.load(file)
+        vector = self.extract_features(audio, 44100, nfft = 2205, winlen = 0.05)
+        log_likelihood = np.zeros(len(self.models1))
+        for i in range(len(self.models1)):
+            gmm = self.models1[i] 
+            scores = np.array(gmm.score(vector))
+            log_likelihood[i] = scores.sum()
+
+        winner = np.argmax(log_likelihood)
+
+        print(log_likelihood)
+        self.yAxis1 = [log_likelihood[0], max(log_likelihood[1:])]
+
+        if winner != 0:
+            winner = 5
+
+        return self.process_output1(winner)
+
     def predict_model2(self, file):
         audio, sr = librosa.load(file)
         vector = self.extract_features(audio, sr, nfft = 2205, winlen = 0.05)
@@ -86,72 +105,39 @@ class Processing:
         else:
             winner = 4
 
+        self.yAxis2 = log_likelihood
+
         return self.process_output2(winner)
-
-
-    def predict_model1(self, file):
-        audio, sr = librosa.load(file)
-        vector = self.extract_features(audio, 44100, nfft = 2205, winlen = 0.05)
-        log_likelihood = np.zeros(len(self.models1))
-        for i in range(len(self.models1)):
-            gmm = self.models1[i] 
-            scores = np.array(gmm.score(vector))
-            log_likelihood[i] = scores.sum()
-
-        winner = np.argmax(log_likelihood)
-
-        # flag = max(log_likelihood) - log_likelihood
-        # testFlag = True
-        # for i in range(len(flag)):
-        #     if log_likelihood[i] == max(log_likelihood):
-        #         continue
-        #     if abs(flag[i]) < 0.7:
-        #         testFlag = False
-
-        print(log_likelihood)
-        # print(flag)
-        # if testFlag:
-        #     winner = np.argmax(log_likelihood)
-        # else:
-        #     winner = 5
-
-        if winner != 0:
-            winner = 5
-
-        return self.process_output1(winner)
-
-    def predict_svm(self, file):
-        x = list(self.features_extractor(file, n_samples = 46))
-        x1 = list(self.features_extractor_lpc(file))
-        x2 = self.features_extractor_rms(file)
-        x3 = self.features_extractor_plp(file)
-        sentenceModelInputs = x + x1
-        sentenceModelInputs.append(x2)
-        sentenceModelInputs.append(x3)
-
-        sentenceModelInputs = np.array(sentenceModelInputs).reshape(1, -1)
-        personsModelInputs = np.array(list(self.features_extractor(file, n_samples = 46))).reshape(1, -1)
-
-        sentenceModelInputs = self.model1Scaler.transform(sentenceModelInputs)
-        personsModelInputs = self.model2Scaler.transform(personsModelInputs)
-
-        prediction1 = self.model1.predict(np.array(sentenceModelInputs))
-        prediction2 = self.model2.predict(np.array(personsModelInputs))
-
-        score = self.model1.predict_proba(np.array(sentenceModelInputs))
-        if abs(score[0][0] - score[0][1]) < 0.2:
-            sentence = self.process_output1(1)
-        else:
-            sentence = self.process_output1(prediction1[0])
-
-        person = self.process_output2(prediction2[0])
-
-        return sentence, person
 
     
     def process_output1(self, labelIndex):
-        return ['Open The Door', 'Open The Book', 'Close The Window', \
-            'Open The Window', 'Close The Door', 'Others'][labelIndex]
+        return ['Open The Door', 'Close The Door', 'Open The Window', 'Close The Window',\
+             'Open The Book', 'Others'][labelIndex]
 
     def process_output2(self, labelIndex):
         return ["Kamel", "Abdelrahman", "Sama", "Yousr", "Others"][labelIndex]
+
+
+    def getGraph1Data(self):
+        return ['Open The Door', 'Others'], self.yAxis1
+
+    def getGraph2Data(self):
+        return ['Kamel', 'Abdelrahman', 'Sama', 'Yousr'], list(self.yAxis2)
+
+    def getGraph1Data(self):
+        return ['Open The Door', 'Others'], self.yAxis1
+
+    def getGraph2Data(self):
+        return ['Kamel', 'Abdelrahman', 'Sama', 'Yousr'], list(self.yAxis2)
+
+
+    def getSpectrogram1(self, file):
+        audio, sr = librosa.load(file)
+        f, t, Sxx = signal.spectrogram(audio, sr)
+        return f, t, Sxx
+
+    def getSpectrogram2(self, file):
+        audio, sr = librosa.load(file)
+        f, t, Sxx = signal.spectrogram(audio, sr)
+        return f, t, Sxx
+        

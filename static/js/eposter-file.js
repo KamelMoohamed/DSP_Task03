@@ -1,4 +1,3 @@
-
 let micInput = document.querySelector("#record");
 micInput.addEventListener("click", (e) => {
   micInput.classList.toggle("mic-input-active");
@@ -43,12 +42,6 @@ let progCircles = document.querySelectorAll(".circle");
 let formData = new FormData();
 function sendWAVtoBack(blob) {
   formData.delete("file");
-  // var audio = document.getElementById('audio');
-  // var url = URL.createObjectURL(blob);
-  // audio.src=url
-  // console.log(blob)
-  // console.log(audio)
-  // audio.play();
 
   formData.append("file", blob);
 
@@ -61,8 +54,20 @@ function sendWAVtoBack(blob) {
     processData: false,
     async: true,
     success: function (data) {
+      if (
+        data.graph1 &&
+        data.graph2 &&
+        data.spectrogram1 &&
+        data.spectrogram2
+      ) {
+        drawBarPlot(
+          data.graph1,
+          data.graph2,
+          data.spectrogram1,
+          data.spectrogram2
+        );
+      }
       if (data.person != "Others") {
-        
         userName.innerHTML = `Welcome ${data.person}`;
         currentStatus.innerHTML = `Right Password`;
         progCircles.forEach((circle) =>
@@ -106,55 +111,83 @@ function wrongVoice() {
   micInput.classList.add("wrong-voice");
   setTimeout(restMicBtn, 2000);
 }
-var trace1 = {
-  x: [1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004],
-  y: [219, 146, 112, 127, 124, 180, 236, 207, 236, 263, 350, 430],
-  name: 'Rest of world',
-  marker: {color: 'rgba(7, 3, 49, 0.733)'},
-  type: 'bar'
-};
-var trace2 = {
-  x: [1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004],
-  y: [219, 146, 112, 127, 124, 180, 236, 207, 236, 263, 350, 430],
-  name: 'Rest of world',
-  marker: {color: 'rgba(7, 3, 49, 0.733)'},
-  type: 'bar'
-};
-var data1 = [ trace1 ];
-var data2=[ trace2 ];
-var layout = {
-  // autosize: true,
-  useResizeHandler: true,
-  responsive:true,
-  height: 260,
-  margin: {
-    l: 24,
-    r: 10,
-    t: 50,
-    b: 30,
-    // pad:4
-  },
-   paper_bgcolor: 'transparent',
-  plot_bgcolor: 'transparent',
-  // "xaxis": {
-  //   "visible": false
-  // },
-  legend: {
-    font: {
-      family: "Arial, sans-serif",
+
+function drawBarPlot(data1, data2, spectrogram1, spectrogram2) {
+  let colorScale = [
+    ["0.0", "#023a21"],
+    ["0.111111111111", "#035934"],
+    ["0.222222222222", "#027161"],
+    ["0.333333333333", "#02888e"],
+    ["0.444444444444", "#01a0bb"],
+    ["0.555555555556", "#00b7e8"],
+    ["0.666666666667", "#048ac5"],
+    ["0.777777777778", "#085da2"],
+    ["0.888888888889", "#0f025b"],
+    ["1.0", "#0f025b"],
+  ];
+
+  let spectrolayout = {
+    width: 430,
+    height: 260,
+    margin: { l: 30, r: 40, b: 25, t: 25, pad: 1 },
+    yaxis: { range: [0, Math.max.apply(Math, spectrogram1.f)] },
+    paper_bgcolor: "transparent",
+    plot_bgcolor: "transparent",
+  };
+
+  var trace1 = {
+    x: data1.x,
+    y: data1.y,
+    name: "Rest of world",
+    marker: { color: "rgba(7, 3, 49, 0.733)" },
+    type: "bar",
+  };
+  var trace2 = {
+    x: data2.x,
+    y: data2.y,
+    name: "Rest of world",
+    marker: { color: "rgba(7, 3, 49, 0.733)" },
+    type: "bar",
+  };
+
+  originalSpectrogram1 = {
+    x: spectrogram1.t,
+    y: spectrogram1.f,
+    z: spectrogram1.Sxx,
+    type: "heatmap",
+    colorscale: colorScale,
+  };
+  originalSpectrogram2 = {
+    x: spectrogram2.t,
+    y: spectrogram2.f,
+    z: spectrogram2.Sxx,
+    type: "heatmap",
+    colorscale: colorScale,
+  };
+
+  var data1 = [trace1];
+  var data2 = [trace2];
+
+  var layout = {
+    useResizeHandler: true,
+    responsive: true,
+    height: 260,
+    margin: {
+      l: 24,
+      r: 10,
+      t: 50,
+      b: 30,
     },
-  },
-};
-Plotly.newPlot('bar1_content', data1,layout,{responsive: true});
-Plotly.newPlot('bar2_content', data2,layout,{responsive: true});
-
-
-// let correct = document.querySelector(".correct");
-// let wrong = document.querySelector(".test-btn.wrong");
-// correct.addEventListener("click", (e) => {
-//   openDoor();
-// });
-// wrong.addEventListener("click", (e) => {
-//   wrongVoice();
-//   ironDoorClose();
-// });
+    paper_bgcolor: "transparent",
+    plot_bgcolor: "transparent",
+    legend: {
+      font: {
+        family: "Arial, sans-serif",
+      },
+    },
+  };
+  Plotly.newPlot("bar1_content", data1, layout, { responsive: true });
+  Plotly.newPlot("bar2_content", data2, layout, { responsive: true });
+  Plotly.newPlot("spectro1_content", [originalSpectrogram1], spectrolayout);
+  Plotly.newPlot("spectro2_content", [originalSpectrogram2], spectrolayout);
+}
