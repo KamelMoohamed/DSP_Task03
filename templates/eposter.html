@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src='https://cdn.plot.ly/plotly-2.16.1.min.js'></script>
+    <link rel="stylesheet" href="/static/css/eposter.css">
+    <link rel="stylesheet" href="/static/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <body>
+        <main class="container">
+            <div class="barplot">
+                <div class="barplot-content">
+                    <div id="bar1_content">  
+                    </div>
+                </div> 
+                    <div class="barplot-content">
+                        <div id="bar2_content">  
+                        </div>
+                    </div> 
+            </div>
+            <div class="spectrogram">
+                <div class="spectrogram-content">
+                    <div id="spectro1_content">  
+                    </div>
+                </div> 
+                    <div class="spectrogram-content">
+                        <div id="spectro2_content">  
+                        </div>
+                    </div> 
+            </div>
+        </main>
+        <div class="mic-input">
+            <div id ="recording">
+                <button id="record">
+                    <div class="mic-icon">
+                        <i class="fa-solid fa-microphone"></i>
+                    </div>
+                </button>
+            </div>
+        </div>
+        
+        <div id="processing">
+            <div>
+                <audio id="audio" controls hidden>
+            </div>
+        </div>
+        <div class="user-data">
+            <div class="circles">
+                <div class="circle"></div>
+                <div class="circle"></div>
+            </div>
+            <div class="data-text">
+                <div class="data current-status"> </div>
+                <div class="data user-name">Welcome <span class="name">Abdelrhman</span></div>
+            </div>
+        </div>
+    </body>
+</body>
+    <script src="/static/js/eposter.js"></script>
+    <script src="/static/js/recorder.js"></script>
+    <script src="/static/js/all.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery.min.js"></script>
+    <script src="https://markjivko.com/dist/recorder.js"></script>
+</html>

@@ -6,7 +6,9 @@ from processing.processing import Processing
 
 sys.path.append('./processing')
 app = Flask(__name__, template_folder="templates")
-
+@app.route('/eposter')
+def eposter():
+    return render_template('eposter.html')    
 
 @app.route('/', methods=['GET'])
 def index():

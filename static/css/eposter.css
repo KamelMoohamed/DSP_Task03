@@ -1,0 +1,228 @@
+:root{
+    --primary-color: rgb(81, 80, 95);
+    --shade-color: rgb(29, 28, 35);
+    --darker-shade: rgb(18, 18, 22);
+    --black: black;
+    --border-radius: 15px;
+}
+
+body{
+    background-color: #d0d5f3;
+    background-position: center; 
+    background-repeat: no-repeat; 
+    background-size:107rem;
+    height: 100vh;
+    overflow: hidden;
+    font-family: 'Roboto', sans-serif;
+}
+
+.container {
+	position: relative;
+	top: 50%;
+	left: 60%;
+	transform: translate(-50%, -50%);
+	width: 70%;
+	height: 85vh;
+	background: #000522e0 ;
+	box-shadow: 0px 56.2835px 112.567px rgba(70, 70, 70, 0.78);
+	border-radius: 20px;
+}
+.barplot {
+    display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 5%;
+}
+.barplot .barplot-content{
+    background: rgba(255, 255, 255, 0.2);
+	width: 38%;
+	height: 35vh;
+	padding: 0px 5px;
+	border-radius: 5px;
+	position: relative;
+    margin-top: 30px;
+	transition: all 200ms ease-in-out;
+}
+.spectrogram{
+    display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 5%;
+}
+.spectrogram .spectrogram-content{
+    display: flex;
+    background: rgba(255, 255, 255, 0.2);
+	width: 38%;
+	height: 35vh;
+	padding: 0px 5px;
+	border-radius: 5px;
+	position: relative;
+    margin-top: 30px;
+	transition: all 200ms ease-in-out; 
+}
+.barplot .barplot-content:hover {
+	cursor: pointer;
+	background: rgba(255, 255, 255, 0.336);
+}
+.spectrogram .spectrogram-content:hover {
+	cursor: pointer;
+	background: rgba(255, 255, 255, 0.466);
+}
+
+.mic-input{
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 45.2%;
+    left: -2%;
+    transform: translate(60.4%, -250%);
+    background-color: transparent;
+    width: 13%;
+    height: 5%;
+    border-radius: 25px;
+    cursor: pointer;
+    color: black;
+    border: 0;
+    transition: 0.3s ease-in-out;
+    border: 2px solid transparent;
+}
+
+#recording{
+    width: 99%;
+    height: 99%;
+    border-radius: var(--border-radius);
+}
+
+#recording button{
+    width: 100%;
+    height: 200%;
+    border-radius: inherit;
+    background-color: transparent;
+    color: rgb(2, 6, 31);
+    appearance: none;
+    outline: 0;
+    border: none;
+    transition: 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.mic-icon{
+    color: inherit;
+    font-size: 4rem;
+    pointer-events: none;
+}
+
+.mic-input-active{
+    color: white !important;
+    border: 2px solid white !important;
+}
+
+.correct-voice{
+    color: greenyellow !important;
+    border: 2px solid greenyellow !important;
+}
+
+.wrong-voice{
+    color: red !important;
+    border: 2px solid red !important;
+}
+
+.test-buttons{
+    width: 10rem;
+    height: 5rem;
+}
+
+
+.user-data{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    width: 12%;
+    height: 18%;
+    position: absolute;
+    top: 50.2%;
+    left: -2%;
+    transform: translate(60.4%, -20%);
+    border-radius: var(--border-radius);
+    border: 10px solid transparent;
+    border-bottom: transparent;
+    z-index: -3;
+}
+
+.circles{
+    width: 50%;
+    display: flex;
+    justify-content: space-evenly;
+    position: absolute;
+    top: 5%
+    
+}
+
+.circle{
+    width: 1rem;
+    height: 1rem;
+    background-color: var(--shade-color);
+    border-radius: 50%;
+    transition: 0.3s ease-in-out;
+}
+
+.data-text{
+    text-align: center;
+}
+
+.user-data .data{
+    color: rgb(0, 0, 10);
+    margin-top: 10px;
+}
+
+.user-data .user-name{
+    font-weight: bold;
+}
+
+.user-data .status{
+    font-size: 12px;
+}
+
+.one-cond{
+    background-color: var(--primary-color) !important;
+}
+
+.two-right-conds{
+    background-color: greenyellow;
+}
+
+.two-wrong-conds{
+    background-color: red;
+}
+@media only screen and (max-width: 360px) {
+    .container {
+        width: 7%;
+        height: 2vh;
+    }
+    .barplot {
+        gap: 10px;
+    }
+    .barplot .barplot-content{
+        width: 2%;
+        height: 0.25vh;
+    }
+    .spectrogram{
+        gap: 50px;
+    }
+    .spectrogram .spectrogram-content{
+        width: 2%;
+        height: 0.2vh;
+    }
+    .mic-input{
+        width: 5%;
+        height: 2%;
+    }
+    .user-data{
+        width: 4%;
+        height: 5%;
+    }
+    
+}
