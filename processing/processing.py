@@ -1,6 +1,5 @@
 from scipy import signal
 import numpy as np
-import pickle
 import os
 import joblib
 import librosa
@@ -137,16 +136,21 @@ class Processing:
 
 
     def getGraph1Data(self):
-        return ['Open The Door', 'Others'], self.yAxis1
+        x = self.yAxis1
+        print(x)
+        for i in range(len(x)):
+            x[i] = 2**x[i]
+        x = x / sum(x)
+        return ['Open The Door', 'Others'], list(x*100)
 
     def getGraph2Data(self):
-        return ['Kamel', 'Abdelrahman', 'Sama', 'Yousr'], list(self.yAxis2)
+        x = self.yAxis2
+        print(x)
+        for i in range(len(x)):
+            x[i] = 2**x[i]
+        x = x / sum(x)
+        return ['Kamel', 'Abdelrahman', 'Sama', 'Yousr'], list(x*100)
 
-    def getGraph1Data(self):
-        return ['Open The Door', 'Others'], self.yAxis1
-
-    def getGraph2Data(self):
-        return ['Kamel', 'Abdelrahman', 'Sama', 'Yousr'], list(self.yAxis2)
 
 
     def getSpectrogram1(self, file):
