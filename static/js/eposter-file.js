@@ -170,11 +170,11 @@ function drawBarPlot(data1, data2, spectrogram1, spectrogram2) {
 
   var layout = {
     title: {
-      text:'Model ',
+      text: "Model ",
       font: {
-        family: 'Courier New, monospace',
-        size: 24
-      },  
+        family: "Courier New, monospace",
+        size: 24,
+      },
     },
     useResizeHandler: true,
     height: 260,
@@ -186,29 +186,31 @@ function drawBarPlot(data1, data2, spectrogram1, spectrogram2) {
     },
     xaxis: {
       title: {
-        text: 'labels',
+        text: "labels",
         font: {
-          family: 'Arial, sans-serif',
+          family: "Arial, sans-serif",
           size: 18,
-          color: '#000522e0'
+          color: "#000522e0",
         },
         showticklabels: true,
         tickfont: {
-          family: 'Old Standard TT, serif',
+          family: "Old Standard TT, serif",
           size: 14,
-          color: 'white'
+          color: "white",
         },
-      },},
-      yaxis: {
-        title: {
-          text: 'precentage',
-          font: {
-            family: 'Arial, sans-serif',
-            size: 16,
-            color: '#000522e0'
-          }
-        }
       },
+    },
+    yaxis: {
+      range: [0, 100],
+      title: {
+        text: "precentage",
+        font: {
+          family: "Arial, sans-serif",
+          size: 16,
+          color: "#000522e0",
+        },
+      },
+    },
     paper_bgcolor: "transparent",
     plot_bgcolor: "transparent",
     legend: {
