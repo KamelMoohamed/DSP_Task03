@@ -56,11 +56,16 @@ class Processing:
         return combined
     
     def predict_pipelines(self, file):
+        audio, sr = librosa.load(file)
+        duration = librosa.get_duration(y=audio, sr=sr)
+
         sentence = self.predict_model1(file)
         person = self.predict_model2(file)
 
         print(sentence)
         print(person)
+        if(duration < 1):
+            return 'Others', 'Others'
             
         return sentence, person
 
@@ -77,6 +82,19 @@ class Processing:
         winner = np.argmax(log_likelihood)
 
         print(log_likelihood)
+        flag = max(log_likelihood) - log_likelihood
+        print(flag)
+        testFlag = True
+        for i in range(len(flag)):
+            if log_likelihood[i] == max(log_likelihood):
+                continue
+            if abs(flag[i]) < 0.3:
+                testFlag = False
+        if testFlag:
+            winner = np.argmax(log_likelihood)
+        else:
+            winner = 5
+
         self.yAxis1 = [log_likelihood[0], max(log_likelihood[1:])]
 
         if winner != 0:
