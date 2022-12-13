@@ -67,8 +67,8 @@ function sendWAVtoBack(blob) {
           data.spectrogram2
         );
       }
-      if (data.person != "Others") {
-        userName.innerHTML = `Welcome ${data.person}`;
+      if (data.prediction != "Others") {
+        userName.innerHTML = `Welcome ${data.prediction}`;
         currentStatus.innerHTML = `Right Password`;
         progCircles.forEach((circle) =>
           circle.classList.add("two-right-conds")
@@ -171,7 +171,7 @@ function drawBarPlot(data1, data2, spectrogram1, spectrogram2) {
   var layout = {
     title: {
       font: {
-        family: 'Roboto',
+        family: "Roboto",
         size: 24,
       },
     },
@@ -187,13 +187,13 @@ function drawBarPlot(data1, data2, spectrogram1, spectrogram2) {
       title: {
         text: "labels",
         font: {
-          family: 'Roboto',
+          family: "Roboto",
           size: 14,
           color: "#000522e0",
         },
         showticklabels: true,
         tickfont: {
-          family: 'Roboto',
+          family: "Roboto",
           size: 14,
           color: "white",
         },

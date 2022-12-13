@@ -3,16 +3,12 @@ import sys
 from werkzeug.utils import secure_filename
 from flask import Flask, jsonify, render_template, request
 from processing.processing import Processing
+from processing.feature_extraction_processing import getSpectrogram
 
 sys.path.append('./processing')
 app = Flask(__name__, template_folder="templates")
 
 isHome = False
-
-@app.route('/eposter')
-def eposter():
-    isHome = False
-    return render_template('eposter.html')    
 
 @app.route('/', methods=['GET'])
 def index():
@@ -20,30 +16,43 @@ def index():
     return render_template('main.html')
 
 
+@app.route('/poster')
+def poster():
+    isHome = False
+    return render_template('poster.html')    
+
+
 @app.route('/predict', methods=['POST'])
 def predict():
     if request.files['file']:
-        f = request.files['file']
+        # File Saving
+        file = request.files['file']
         abspath = os.path.dirname(__file__)
         file_path = os.path.join(
-            abspath, 'uploads', secure_filename(f.filename))
+            abspath, 'uploads', secure_filename(file.filename))
         file_path += '.wav'
-        f.save(file_path)
+        file.save(file_path)
 
+        # Predication
         processing = Processing()
-        sentence, person = processing.predict_pipelines(file_path)
+        sentence, person = processing.prediction_pipelines(file_path)
+
         if(sentence == 'Others'):
-            person = 'Others'
+            prediction = 'Others'
+        else:
+            prediction = person
 
         if isHome:
+            # Output for Home Page (just prediction)
             return jsonify({
-                "person": person
+                "prediction": prediction
             }), 200
         else:
+            # Output for the e-poster page (prediction with diagrams)
             xAxis1, yAxis1 = processing.getGraph1Data()
             xAxis2, yAxis2 = processing.getGraph2Data()
-            f1, t1, Sxx1 = processing.getSpectrogram1(file_path)
-            f2, t2, Sxx2 = processing.getSpectrogram2(file_path)
+            freq1, time1, freqAmp1 = getSpectrogram(file_path)
+            freq2, time2, freqAmp2 = getSpectrogram(processing.getSpectrogramFilePath())
 
             return jsonify(
                 {
@@ -56,19 +65,20 @@ def predict():
                         'y':yAxis2
                     },
                     "spectrogram1": {
-                        'f': list(f1),
-                        't': list(t1),
-                        'Sxx': Sxx1.tolist()
+                        'f': list(freq1),
+                        't': list(time1),
+                        'Sxx': freqAmp1.tolist()
                     },
                     "spectrogram2": {
-                        'f': list(f2),
-                        't': list(t2),
-                        'Sxx': Sxx2.tolist()
+                        'f': list(freq2),
+                        't': list(freq2),
+                        'Sxx': freqAmp2.tolist()
                     },
-                    "person" : person
+                    "prediction" : prediction
                 }
             ), 200
 
+    # Case of File Not Uploaded
     return 400
 
 
