@@ -126,11 +126,11 @@ let ironDoor = document.querySelector(".iron-door");
 function openDoor() {
   door.classList.add("door-open");
   micInputCorrect();
+  setTimeout(closeDoor, 1500);
 }
 
 function closeDoor() {
   door.classList.remove("door-open");
-  micInputCorrect();
 }
 
 function micInputCorrect() {

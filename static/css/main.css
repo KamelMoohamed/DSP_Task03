@@ -392,6 +392,7 @@ body{
     margin: 10px;
     cursor: pointer;
     text-align: center;
+    display: none;
 }
 
 .test-btn.correct{
