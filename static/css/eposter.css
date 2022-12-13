@@ -7,7 +7,7 @@
 }
 
 body{
-    background-color: #d0d5f3;
+    background-color: #00051e;
     background-position: center; 
     background-repeat: no-repeat; 
     background-size:107rem;
@@ -23,41 +23,56 @@ body{
 	transform: translate(-50%, -50%);
 	width: 70%;
 	height: 85vh;
-	background: #000522e0 ;
-	box-shadow: 0px 56.2835px 112.567px rgba(70, 70, 70, 0.78);
-	border-radius: 20px;
+	/* background: #000522e0 ; */
+	/* box-shadow: 0px 56.2835px 112.567px rgba(70, 70, 70, 0.78); */
+	border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
 }
+
+.labels{
+    display: flex;
+    justify-content: space-around;
+}
+
+.labels div{
+    color: white;
+    font-weight: 500;
+}
+
 .barplot {
     display: flex;
 	align-items: center;
 	justify-content: center;
-	gap: 5%;
+	gap: 1%;
 }
 .barplot .barplot-content{
-    background: rgba(255, 255, 255, 0.774);
-	width: 38%;
-	height: 35vh;
+    background: rgba(255, 255, 255, 0.8);
+	width: 48.2%;
+	height: 38.5vh;
 	padding: 0px 5px;
 	border-radius: 5px;
 	position: relative;
-    margin-top: 30px;
-	transition: all 200ms ease-in-out;
+    margin-top: 2vh;
 }
+
 .spectrogram{
     display: flex;
 	align-items: center;
 	justify-content: center;
-	gap: 5%;
+    gap: 1%;
+    margin-bottom: 1vh;
 }
 .spectrogram .spectrogram-content{
     display: flex;
-    background: rgba(255, 255, 255, 0.774);
-	width: 38%;
-	height: 35vh;
+    background: rgba(255, 255, 255, 0.8);
+	width: 48.2%;
+	height: 38.5vh;
 	padding: 0px 5px;
 	border-radius: 5px;
 	position: relative;
-    margin-top: 30px;
+    margin-top: 1.5vh;
 	transition: all 200ms ease-in-out; 
 }
 .mic-input{
@@ -90,7 +105,7 @@ body{
     height: 200%;
     border-radius: inherit;
     background-color: transparent;
-    color: rgb(2, 6, 31);
+    color: white;
     appearance: none;
     outline: 0;
     border: none;
@@ -100,7 +115,7 @@ body{
 
 .mic-icon{
     color: inherit;
-    font-size: 4rem;
+    font-size: 3rem;
     pointer-events: none;
 }
 
@@ -155,17 +170,19 @@ body{
 .circle{
     width: 1rem;
     height: 1rem;
-    background-color: var(--shade-color);
+    background-color: white;
     border-radius: 50%;
     transition: 0.3s ease-in-out;
 }
 
 .data-text{
     text-align: center;
+    color: white;
+
 }
 
 .user-data .data{
-    color: rgb(0, 0, 10);
+    color: inherit;
     margin-top: 10px;
 }
 
@@ -182,7 +199,7 @@ body{
 }
 
 .two-right-conds{
-    background-color: greenyellow;
+    background-color: rgb(9, 79, 183);
 }
 
 .two-wrong-conds{

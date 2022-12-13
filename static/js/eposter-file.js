@@ -114,23 +114,23 @@ function wrongVoice() {
 
 function drawBarPlot(data1, data2, spectrogram1, spectrogram2) {
   let colorScale = [
-    ["0.0", "#023a21"],
-    ["0.111111111111", "#035934"],
-    ["0.222222222222", "#027161"],
-    ["0.333333333333", "#02888e"],
-    ["0.444444444444", "#01a0bb"],
-    ["0.555555555556", "#00b7e8"],
-    ["0.666666666667", "#048ac5"],
-    ["0.777777777778", "#085da2"],
-    ["0.888888888889", "#0f025b"],
-    ["1.0", "#0f025b"],
+    ["0.0", "#00051e"],
+    ["0.111111111111", "#3b3877"],
+    ["0.222222222222", "#3a3790"],
+    ["0.333333333333", "#3835a8"],
+    ["0.444444444444", "#3633c1"],
+    ["0.555555555556", "#3633c1"],
+    ["0.666666666667", "#652aa2"],
+    ["0.777777777778", "#942183"],
+    ["0.888888888889", "#c31864"],
+    ["1.0", "#f20f45"],
   ];
 
   let spectrolayout = {
-    width: 430,
+    width: 520,
     height: 260,
-    margin: { l: 30, r: 40, b: 25, t: 25, pad: 1 },
-    yaxis: { range: [0, Math.max.apply(Math, spectrogram1.f)] },
+    margin: { l: 40, r: 40, b: 25, t: 25, pad: 1 },
+    yaxis: { range: [0, 2000] },
     paper_bgcolor: "transparent",
     plot_bgcolor: "transparent",
   };
@@ -139,14 +139,14 @@ function drawBarPlot(data1, data2, spectrogram1, spectrogram2) {
     x: data1.x,
     y: data1.y,
     name: "Rest of world",
-    marker: { color: "rgba(7, 3, 49, 0.733)" },
+    marker: { color: "#00051e" },
     type: "bar",
   };
   var trace2 = {
     x: data2.x,
     y: data2.y,
     name: "Rest of world",
-    marker: { color: "rgba(7, 3, 49, 0.733)" },
+    marker: { color: "#00051e" },
     type: "bar",
   };
 
@@ -170,9 +170,8 @@ function drawBarPlot(data1, data2, spectrogram1, spectrogram2) {
 
   var layout = {
     title: {
-      text: "Model ",
       font: {
-        family: "Courier New, monospace",
+        family: 'Roboto',
         size: 24,
       },
     },
@@ -188,13 +187,13 @@ function drawBarPlot(data1, data2, spectrogram1, spectrogram2) {
       title: {
         text: "labels",
         font: {
-          family: "Arial, sans-serif",
-          size: 18,
+          family: 'Roboto',
+          size: 14,
           color: "#000522e0",
         },
         showticklabels: true,
         tickfont: {
-          family: "Old Standard TT, serif",
+          family: 'Roboto',
           size: 14,
           color: "white",
         },
