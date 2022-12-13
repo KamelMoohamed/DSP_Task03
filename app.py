@@ -3,7 +3,8 @@ import sys
 from werkzeug.utils import secure_filename
 from flask import Flask, jsonify, render_template, request
 from processing.processing import Processing
-from processing.feature_extraction_processing import getSpectrogram
+from processing.feature_extraction_processing import getGraph3Data, getGraph4Data
+from processing.peaks_features import fingerprint
 
 sys.path.append('./processing')
 app = Flask(__name__, template_folder="templates")
@@ -51,8 +52,9 @@ def predict():
             # Output for the e-poster page (prediction with diagrams)
             xAxis1, yAxis1 = processing.getGraph1Data()
             xAxis2, yAxis2 = processing.getGraph2Data()
-            freq1, time1, freqAmp1 = getSpectrogram(file_path)
-            freq2, time2, freqAmp2 = getSpectrogram(processing.getSpectrogramFilePath())
+
+            x1, y1, color1 = getGraph3Data(file_path)
+            x2, y2, color2 = getGraph4Data(file_path)
 
             return jsonify(
                 {
@@ -64,15 +66,15 @@ def predict():
                         'x':xAxis2,
                         'y':yAxis2
                     },
-                    "spectrogram1": {
-                        'f': list(freq1),
-                        't': list(time1),
-                        'Sxx': freqAmp1.tolist()
+                    "graph3":{
+                        'x':list(x1),
+                        'y':list(y1),
+                        'color':list(color1)
                     },
-                    "spectrogram2": {
-                        'f': list(freq2),
-                        't': list(freq2),
-                        'Sxx': freqAmp2.tolist()
+                    "graph4":{
+                        'x':list(x2),
+                        'y':list(y2),
+                        'color':list(color2)
                     },
                     "prediction" : prediction
                 }
@@ -80,7 +82,6 @@ def predict():
 
     # Case of File Not Uploaded
     return 400
-
 
 if __name__ == '__main__':
     app.run(debug=True) 

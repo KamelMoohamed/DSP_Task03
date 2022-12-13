@@ -99,9 +99,9 @@ function sendWAVtoBack(blob) {
     processData: false,
     async: true,
     success: function (data) {
-      if (data.person != "Others") {
+      if (data.prediction != "Others") {
         openDoor();
-        userName.innerHTML = `Welcome ${data.person}`;
+        userName.innerHTML = `Welcome ${data.prediction}`;
         currentStatus.innerHTML = `Right Password`;
         progCircles.forEach((circle) =>
           circle.classList.add("two-right-conds")

@@ -103,6 +103,7 @@ class Processing:
         return self.labels1[labelIndex]
 
     def process_output2(self, labelIndex):
+        print(labelIndex)
         self.output2 = self.labels2[labelIndex]
         return self.output2
 
