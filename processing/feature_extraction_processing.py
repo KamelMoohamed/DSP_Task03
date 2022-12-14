@@ -50,18 +50,16 @@ def features_extractor(file):
 
 def getGraph3Data(file):
     newRow = list(features_extractor(file))
+    newRow = [newRow[0], newRow[9], 2]
     df = pd.read_csv(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'model1.csv'))
-    df[df['y'] != 0] = 1
-    newRow.append(2)
-    df.iloc[0,:] = newRow
-    print(df.iloc[:,1].values.tolist())
-    return df.iloc[:,0].values.tolist(), df.iloc[:,1].values.tolist(), df['y'].values.tolist()
+    df.iloc[-1,:] = newRow
+    print(df.shape)
+    return df.iloc[:,0].values.tolist(), df.iloc[:,1].values.tolist()
 
 
 def getGraph4Data(file):
     newRow = list(features_extractor(file))
-    newRow.append(4)
+    newRow = [newRow[15], newRow[26], 2]
     df = pd.read_csv(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'model2.csv'))
-    print(len(newRow))
-    df.iloc[0,:] = newRow
-    return df.iloc[:,0].values.tolist(), df.iloc[:,27].values.tolist(), df['y'].values.tolist()
+    df.iloc[-1,:] = newRow
+    return df.iloc[:,0].values.tolist(), df.iloc[:,1].values.tolist()

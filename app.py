@@ -53,28 +53,28 @@ def predict():
             xAxis1, yAxis1 = processing.getGraph1Data()
             xAxis2, yAxis2 = processing.getGraph2Data()
 
-            x1, y1, color1 = getGraph3Data(file_path)
-            x2, y2, color2 = getGraph4Data(file_path)
+            x1, y1 = getGraph3Data(file_path)
+            x2, y2 = getGraph4Data(file_path)
 
             return jsonify(
                 {
                     "graph1" : {
                         'x':xAxis1,
-                        'y':yAxis1
+                        'y':yAxis1,
+                        'lineIndex':processing.getGraph1Line()
                     },
                     "graph2" : {
                         'x':xAxis2,
-                        'y':yAxis2
+                        'y':yAxis2,
+                        'lineIndex':processing.getGraph2Line()
                     },
                     "graph3":{
                         'x':list(x1),
-                        'y':list(y1),
-                        'color':list(color1)
+                        'y':list(y1)
                     },
                     "graph4":{
                         'x':list(x2),
-                        'y':list(y2),
-                        'color':list(color2)
+                        'y':list(y2)
                     },
                     "prediction" : prediction
                 }

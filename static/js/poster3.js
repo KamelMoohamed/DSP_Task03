@@ -102,80 +102,8 @@ function wrongVoice() {
   setTimeout(restMicBtn, 2000);
 }
 
-function drawBarPlot(data1, data2, data3, data4) {
-  console.log(data3.x);
-  var traceModel1 = {
-    x: data1.x,
-    y: data1.y,
-    marker: { color: "#00051e" },
-    type: "bar",
-  };
-  var traceModel2 = {
-    x: data2.x,
-    y: data2.y,
-    marker: { color: "#00051e" },
-    type: "bar",
-  };
-  
-  var traceOpen={
-    x: data3.x.slice(0,40),
-    y: data3.y.slice(0,40),
-    mode: "markers",
-    type: "scatter",
-    name:"Open",
-    marker: { size: 12, color: "red" },
-  }
-  var traceOther={
-    x: data3.x.slice(40,70),
-    y: data3.y.slice(40,70),
-    mode: "markers",
-    type: "scatter",
-    name:"other",
-    marker: { size: 12, color: "blue" },
-  }
-  
-  var traceKamel={
-    x: data4.x.slice(0,10),
-    y: data4.y.slice(0,10),
-    mode: "markers",
-    type: "scatter",
-    name:"Sama",
-    marker: { size: 12, color: "red" },
-  }
-  var traceSama={
-    x: data4.x.slice(11,20),
-    y: data4.y.slice(11,20),
-    mode: "markers",
-    type: "scatter",
-    name:"Kamel",
-    marker: { size: 12, color: "blue" },
-  }
-  
-  var traceYousr={
-    x: data4.x.slice(21,40),
-    y: data4.y.slice(21,40),
-    mode: "markers",
-    type: "scatter",
-    name:"yousr",
-    marker: { size: 12, color: "gray" },
-  }
-  var traceAbdelrhaman={
-    x: data4.x.slice(41,70),
-    y: data4.y.slice(41,70),
-    mode: "markers",
-    type: "scatter",
-    name:"Abdelrhaman",
-    marker: { size: 12, color: "orange", },
-  }
-  var barMode1 = [traceModel1];
-  var barModel2 = [traceModel2];
-  var scatterModel1 = [
-    traceOpen,traceOther
-  ];
-  var scatterModel2 = [
-    traceKamel,traceSama,traceYousr,traceAbdelrhaman
-  ];
-  var barLayout = {
+function getBarLayout(yIndex) {
+  return {
     useResizeHandler: true,
     height: 260,
     margin: {
@@ -211,16 +139,17 @@ function drawBarPlot(data1, data2, data3, data4) {
     },
     shapes: [
       {
-        type: 'line',
+        type: "line",
         x0: -1,
-        y0: 50,
+        y0: yIndex,
         x1: 3,
-        y1: 50,
+        y1: yIndex,
         line: {
-          color: 'rgb(55, 128, 191)',
-          width: 1
-        }
-      }],
+          color: "rgb(55, 128, 191)",
+          width: 1,
+        },
+      },
+    ],
     paper_bgcolor: "transparent",
     plot_bgcolor: "transparent",
     legend: {
@@ -229,6 +158,99 @@ function drawBarPlot(data1, data2, data3, data4) {
       },
     },
   };
+}
+
+function drawBarPlot(data1, data2, data3, data4) {
+  var traceModel1 = {
+    x: data1.x,
+    y: data1.y,
+    marker: { color: "#00051e" },
+    type: "bar",
+  };
+  var traceModel2 = {
+    x: data2.x,
+    y: data2.y,
+    marker: { color: "#00051e" },
+    type: "bar",
+  };
+
+  var traceOpen = {
+    x: data3.x.slice(0, 76),
+    y: data3.y.slice(0, 76),
+    mode: "markers",
+    type: "scatter",
+    name: "Open",
+    marker: { size: 12, color: "red" },
+  };
+  var traceOther = {
+    x: data3.x.slice(76, 324),
+    y: data3.y.slice(76, 324),
+    mode: "markers",
+    type: "scatter",
+    name: "other",
+    marker: { size: 12, color: "blue" },
+  };
+  var tracePoint = {
+    x: data3.x[325],
+    y: data3.y[325],
+    mode: "markers",
+    type: "scatter",
+    name: "prediction point",
+    marker: { size: 20, color: "green", Symbol: "x" },
+  };
+
+  var traceKamel = {
+    x: data4.x.slice(0, 23),
+    y: data4.y.slice(0, 23),
+    mode: "markers",
+    type: "scatter",
+    name: "Sama",
+    marker: { size: 12, color: "red" },
+  };
+  var traceSama = {
+    x: data4.x.slice(45, 78),
+    y: data4.y.slice(45, 78),
+    mode: "markers",
+    type: "scatter",
+    name: "Kamel",
+    marker: { size: 12, color: "blue" },
+  };
+
+  var traceYousr = {
+    x: data4.x.slice(78, 102),
+    y: data4.y.slice(78, 102),
+    mode: "markers",
+    type: "scatter",
+    name: "yousr",
+    marker: { size: 12, color: "gray" },
+  };
+  var traceAbdelrhaman = {
+    x: data4.x.slice(23, 45),
+    y: data4.y.slice(23, 45),
+    mode: "markers",
+    type: "scatter",
+    name: "Abdelrhaman",
+    marker: { size: 12, color: "orange" },
+  };
+  var tracePoint2 = {
+    x: data4.x[103],
+    y: data4.y[103],
+    mode: "markers",
+    type: "scatter",
+    name: "Prediction Point",
+    marker: { size: 20, color: "green", Symbol: "x" },
+  };
+  var barMode1 = [traceModel1];
+  var barModel2 = [traceModel2];
+  var scatterModel1 = [traceOpen, traceOther, tracePoint];
+  var scatterModel2 = [
+    traceKamel,
+    traceSama,
+    traceYousr,
+    traceAbdelrhaman,
+    tracePoint2,
+  ];
+
   var scatterLayout = {
     width: 520,
     height: 320,
@@ -237,7 +259,7 @@ function drawBarPlot(data1, data2, data3, data4) {
     },
     xaxis: {
       title: {
-        text: "labels",
+        text: "mffc_1",
         font: {
           family: "Roboto",
           size: 14,
@@ -248,35 +270,38 @@ function drawBarPlot(data1, data2, data3, data4) {
     paper_bgcolor: "transparent",
     plot_bgcolor: "transparent",
   };
-var scatterModel1_update = {
-  yaxis: {
-    title: {
-      text: "mffc_1",
-      font: {
-        family: "Roboto",
-        size: 14,
-        color: "#000522e0",
+  var scatterModel1_update = {
+    yaxis: {
+      title: {
+        text: "mffc_2",
+        font: {
+          family: "Roboto",
+          size: 14,
+          color: "#000522e0",
+        },
       },
     },
-  }, 
-};
-var scatterModel2_update = {
-  yaxis: {
-    title: {
-      text: "mffc_2",
-      font: {
-        family: "Roboto",
-        size: 14,
-        color: "#000522e0",
+  };
+  var scatterModel2_update = {
+    yaxis: {
+      title: {
+        text: "mffc_2",
+        font: {
+          family: "Roboto",
+          size: 14,
+          color: "#000522e0",
+        },
       },
     },
-  }, 
-};
-  Plotly.newPlot("bar1_content", barMode1, barLayout, { responsive: true });
-  Plotly.newPlot("bar2_content", barModel2, barLayout, { responsive: true });
-  Plotly.newPlot('scatter1_content', scatterModel1, scatterLayout);
-  Plotly.update('scatter1_content', scatterModel1,scatterModel1_update);
+  };
+  Plotly.newPlot("bar1_content", barMode1, getBarLayout(data1.lineIndex), {
+    responsive: true,
+  });
+  Plotly.newPlot("bar2_content", barModel2, getBarLayout(data2.lineIndex), {
+    responsive: true,
+  });
+  Plotly.newPlot("scatter1_content", scatterModel1, scatterLayout);
+  Plotly.update("scatter1_content", scatterModel1, scatterModel1_update);
   Plotly.newPlot("scatter2_content", scatterModel2, scatterLayout);
   Plotly.update("scatter2_content", scatterModel2, scatterModel2_update);
-
 }
