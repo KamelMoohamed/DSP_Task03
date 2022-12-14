@@ -53,8 +53,8 @@ def getGraph3Data(file):
     df = pd.read_csv(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'model1.csv'))
     df[df['y'] != 0] = 1
     newRow.append(2)
-    print(len(newRow))
     df.iloc[0,:] = newRow
+    print(df.iloc[:,1].values.tolist())
     return df.iloc[:,0].values.tolist(), df.iloc[:,1].values.tolist(), df['y'].values.tolist()
 
 

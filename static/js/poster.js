@@ -103,6 +103,7 @@ function wrongVoice() {
 }
 
 function drawBarPlot(data1, data2, data3, data4) {
+  console.log(data3.y);
   var trace1 = {
     x: data1.x,
     y: data1.y,
@@ -117,27 +118,37 @@ function drawBarPlot(data1, data2, data3, data4) {
     marker: { color: "#00051e" },
     type: "bar",
   };
-
+  
+  var traceopen={
+    x: data3.x.slice(0,40),
+    y: data3.y.slice(0,40),
+    mode: "markers+text",
+    type: "scatter",
+    text: Array(40).fill('op'),
+    marker: { size: 12, color: "red" },
+  }
+  var traceother={
+    x: data3.x.slice(40,325),
+    y: data3.y.slice(40,325),
+    mode: "markers+text",
+    type: "scatter",
+    text: Array(325-40).fill('ot'),
+    marker: { size: 12, color: "blue" },
+  }
+  
   var data1 = [trace1];
   var data2 = [trace2];
   var trace3 = [
-    {
-      x: data3.x,
-      y: data3.y,
-      mode: "markers+text",
-      type: "scatter",
-      text: ["Open The Door", "Others", "Prediction"],
-      marker: { size: 12, color: data3.color },
-    },
+    traceopen,traceother
   ];
 
   var trace4 = [
     {
       x: data4.x,
       y: data4.y,
-      mode: "markers+text",
+      mode: "markers",
       type: "scatter",
-      text: ["Kamel", "Abdelrahman", "Sama", "Yousr", "Prediction"],
+      // text: ["Kamel", "Abdelrahman", "Sama", "Yousr", ],
       marker: { size: 12, color: data4.color },
     },
   ];
@@ -200,12 +211,12 @@ function drawBarPlot(data1, data2, data3, data4) {
         size: 24,
       },
     },
-    width: 450,
-    height: 260,
+    width: 550,
+    height: 340,
     margin: {
-      l: 50,
+      l: 10,
       r: 10,
-      t: 50,
+      t: 30,
       b: 40,
     },
     xaxis: {
@@ -230,13 +241,7 @@ function drawBarPlot(data1, data2, data3, data4) {
     },
     paper_bgcolor: "transparent",
     plot_bgcolor: "transparent",
-    legend: {
-      y: 1,
-      yref: "paper",
-      font: {
-        family: "Arial, sans-serif",
-      },
-    },
+    
   };
 
   Plotly.newPlot("bar1_content", data1, layout, { responsive: true });
