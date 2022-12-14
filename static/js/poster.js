@@ -103,68 +103,82 @@ function wrongVoice() {
 }
 
 function drawBarPlot(data1, data2, data3, data4) {
-  console.log(data3.y);
-  var trace1 = {
+  console.log(data3.x);
+  var traceModel1 = {
     x: data1.x,
     y: data1.y,
-    name: "Rest of world",
     marker: { color: "#00051e" },
     type: "bar",
   };
-  var trace2 = {
+  var traceModel2 = {
     x: data2.x,
     y: data2.y,
-    name: "Rest of world",
     marker: { color: "#00051e" },
     type: "bar",
   };
   
-  var traceopen={
+  var traceOpen={
     x: data3.x.slice(0,40),
     y: data3.y.slice(0,40),
-    mode: "markers+text",
+    mode: "markers",
     type: "scatter",
-    text: Array(40).fill('op'),
+    name:"Open",
     marker: { size: 12, color: "red" },
   }
-  var traceother={
-    x: data3.x.slice(40,325),
-    y: data3.y.slice(40,325),
-    mode: "markers+text",
+  var traceOther={
+    x: data3.x.slice(40,70),
+    y: data3.y.slice(40,70),
+    mode: "markers",
     type: "scatter",
-    text: Array(325-40).fill('ot'),
+    name:"other",
     marker: { size: 12, color: "blue" },
   }
   
-  var data1 = [trace1];
-  var data2 = [trace2];
-  var trace3 = [
-    traceopen,traceother
+  var traceKamel={
+    x: data4.x.slice(0,10),
+    y: data4.y.slice(0,10),
+    mode: "markers",
+    type: "scatter",
+    name:"Sama",
+    marker: { size: 12, color: "red" },
+  }
+  var traceSama={
+    x: data4.x.slice(11,20),
+    y: data4.y.slice(11,20),
+    mode: "markers",
+    type: "scatter",
+    name:"Kamel",
+    marker: { size: 12, color: "blue" },
+  }
+  
+  var traceYousr={
+    x: data4.x.slice(21,40),
+    y: data4.y.slice(21,40),
+    mode: "markers",
+    type: "scatter",
+    name:"yousr",
+    marker: { size: 12, color: "gray" },
+  }
+  var traceAbdelrhaman={
+    x: data4.x.slice(41,70),
+    y: data4.y.slice(41,70),
+    mode: "markers",
+    type: "scatter",
+    name:"Abdelrhaman",
+    marker: { size: 12, color: "orange", },
+  }
+  var barMode1 = [traceModel1];
+  var barModel2 = [traceModel2];
+  var scatterModel1 = [
+    traceOpen,traceOther
   ];
-
-  var trace4 = [
-    {
-      x: data4.x,
-      y: data4.y,
-      mode: "markers",
-      type: "scatter",
-      // text: ["Kamel", "Abdelrahman", "Sama", "Yousr", ],
-      marker: { size: 12, color: data4.color },
-    },
+  var scatterModel2 = [
+    traceKamel,traceSama,traceYousr,traceAbdelrhaman
   ];
-
-  var layout = {
-    title: {
-      font: {
-        family: "Roboto",
-        size: 24,
-      },
-    },
+  var barLayout = {
     useResizeHandler: true,
     height: 260,
     margin: {
-      l: 50,
-      r: 10,
       t: 50,
       b: 40,
     },
@@ -195,6 +209,18 @@ function drawBarPlot(data1, data2, data3, data4) {
         },
       },
     },
+    shapes: [
+      {
+        type: 'line',
+        x0: -1,
+        y0: 50,
+        x1: 3,
+        y1: 50,
+        line: {
+          color: 'rgb(55, 128, 191)',
+          width: 1
+        }
+      }],
     paper_bgcolor: "transparent",
     plot_bgcolor: "transparent",
     legend: {
@@ -203,25 +229,15 @@ function drawBarPlot(data1, data2, data3, data4) {
       },
     },
   };
-
   var scatterLayout = {
-    title: {
-      font: {
-        family: "Roboto",
-        size: 24,
-      },
-    },
-    width: 550,
-    height: 340,
+    width: 520,
+    height: 320,
     margin: {
-      l: 10,
-      r: 10,
       t: 30,
-      b: 40,
     },
     xaxis: {
       title: {
-        text: "mffc_2",
+        text: "labels",
         font: {
           family: "Roboto",
           size: 14,
@@ -229,23 +245,38 @@ function drawBarPlot(data1, data2, data3, data4) {
         },
       },
     },
-    yaxis: {
-      title: {
-        text: "mfcc_1",
-        font: {
-          family: "Arial, sans-serif",
-          size: 16,
-          color: "#000522e0",
-        },
-      },
-    },
     paper_bgcolor: "transparent",
     plot_bgcolor: "transparent",
-    
   };
+var scatterModel1_update = {
+  yaxis: {
+    title: {
+      text: "mffc_1",
+      font: {
+        family: "Roboto",
+        size: 14,
+        color: "#000522e0",
+      },
+    },
+  }, 
+};
+var scatterModel2_update = {
+  yaxis: {
+    title: {
+      text: "mffc_2",
+      font: {
+        family: "Roboto",
+        size: 14,
+        color: "#000522e0",
+      },
+    },
+  }, 
+};
+  Plotly.newPlot("bar1_content", barMode1, barLayout, { responsive: true });
+  Plotly.newPlot("bar2_content", barModel2, barLayout, { responsive: true });
+  Plotly.newPlot('scatter1_content', scatterModel1, scatterLayout);
+  Plotly.update('scatter1_content', scatterModel1,scatterModel1_update);
+  Plotly.newPlot("scatter2_content", scatterModel2, scatterLayout);
+  Plotly.update("scatter2_content", scatterModel2, scatterModel2_update);
 
-  Plotly.newPlot("bar1_content", data1, layout, { responsive: true });
-  Plotly.newPlot("bar2_content", data2, layout, { responsive: true });
-  Plotly.newPlot("spectro1_content", trace3, scatterLayout);
-  Plotly.newPlot("spectro2_content", trace4, scatterLayout);
 }

@@ -57,14 +57,14 @@ body{
     margin-top: 2vh;
 }
 
-.spectrogram{
+.scatter{
     display: flex;
 	align-items: center;
 	justify-content: center;
     gap: 1%;
     margin-bottom: 1vh;
 }
-.spectrogram .spectrogram-content{
+.scatter .scatter-content{
     display: flex;
     background: rgba(255, 255, 255, 0.8);
 	width: 48.2%;
