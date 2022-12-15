@@ -62,4 +62,5 @@ def getGraph4Data(file):
     newRow = [newRow[15], newRow[26], 2]
     df = pd.read_csv(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'model2.csv'))
     df.iloc[-1,:] = newRow
+    print(df.shape)
     return df.iloc[:,0].values.tolist(), df.iloc[:,1].values.tolist()

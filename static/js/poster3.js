@@ -191,12 +191,12 @@ function drawBarPlot(data1, data2, data3, data4) {
     marker: { size: 12, color: "blue" },
   };
   var tracePoint = {
-    x: data3.x[325],
-    y: data3.y[325],
+    x: [data3.x[325]],
+    y: [data3.y[325]],
     mode: "markers",
     type: "scatter",
     name: "prediction point",
-    marker: { size: 20, color: "green", Symbol: "x" },
+    marker: { size: 20, color: "green", symbol: 'x' },
   };
 
   var traceKamel = {
@@ -233,12 +233,12 @@ function drawBarPlot(data1, data2, data3, data4) {
     marker: { size: 12, color: "orange" },
   };
   var tracePoint2 = {
-    x: data4.x[103],
-    y: data4.y[103],
+    x: [data4.x[102]],
+    y: [data4.y[102]],
     mode: "markers",
     type: "scatter",
     name: "Prediction Point",
-    marker: { size: 20, color: "green", Symbol: "x" },
+    marker: { size: 20, color: "green",  symbol: 'x'},
   };
   var barMode1 = [traceModel1];
   var barModel2 = [traceModel2];
