@@ -123,32 +123,20 @@ class Processing:
 
     def getGraph1Line(self):
         yAxis = list(self.yAxis1)
-        flagY = list(self.yAxis1)
-
-        flagY.remove(max(flagY))
-        maxValue = max(flagY) + 0.3
-        yAxis[yAxis.index(max(flagY))] = maxValue
-        
         lst = []
         for i in range(len(yAxis)):
             lst.append(2**yAxis[i])
         yAxis.remove(max(yAxis))
-        return ((2**maxValue)/sum(lst))*100
+        return (2**(max(yAxis) + 0.3)/sum(lst))*100
 
 
     def getGraph2Line(self):
         yAxis = list(self.yAxis2)
-        flagY = list(self.yAxis2)
-
-        flagY.remove(max(flagY))
-        maxValue = max(flagY) + 0.7
-        yAxis[yAxis.index(max(flagY))] = maxValue
-        
         lst = []
         for i in range(len(yAxis)):
             lst.append(2**yAxis[i])
         yAxis.remove(max(yAxis))
-        return ((2**maxValue)/sum(lst))*100
+        return (2**(max(yAxis) + 0.7)/sum(lst))*100
 
     def getSpectrogramFilePath(self):
         base_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "records_files")
